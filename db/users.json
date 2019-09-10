@@ -1,0 +1,11 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "unnhao@gmail.com",
+      "password": "e8j5mk",
+      "balance": 0
+    }
+  ],
+  "total": 1
+}
