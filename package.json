@@ -1,10 +1,10 @@
 {
   "name": "2019-IT30-BCR",
   "version": "1.0.0",
-  "description": "��#\u0000 \u00002\u00000\u00001\u00009\u0000-\u0000I\u0000T\u00003\u00000\u0000-\u0000B\u0000C\u0000R\u0000\r\u0000 \u0000",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./webServer/src/adminController.js",
     "start": "node app.js"
   },
   "repository": {
