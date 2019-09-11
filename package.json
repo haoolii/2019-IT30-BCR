@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./webServer/src/adminController.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "node ./test/test-game.js"
   },
   "repository": {
     "type": "git",
