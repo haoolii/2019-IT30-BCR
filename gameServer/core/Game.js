@@ -15,7 +15,8 @@ var Game = function () {
 
   // 內部game data
   this.pool = {}
-  this.state = 0
+  this.userCount = 0
+  this.state = 0 // 0等於暫停 1等於開始
 
   this.initRound = function (roundtmp) { this.roundTemplate = roundtmp }
 
@@ -31,6 +32,8 @@ var Game = function () {
 
   this.initFanPi = function (fanPi) { this.fanPi = fanPi }
 
+  this.initOdds = function (odds) { this.odds = odds }
+
   this.checkInit = function () {
     if (!this.bankererSupplyRule) throw new Error('bankererSupplyRule is null')
     if (!this.playerSupplyRule) throw new Error('playerSupplyRule is null')
@@ -43,6 +46,8 @@ var Game = function () {
 
   this.userJoin = function (user) {
     try {
+      this.userCount++
+      this.reStartCheck()
       this.round.userJoin(user)
     } catch (err) {
       user.emit('MSG', { type: 'RES_BET_JOIN', msg: err })
@@ -63,6 +68,8 @@ var Game = function () {
   }
 
   this.startNewRound = function () {
+    if (this.state) return
+    this.state = 1
     this.round = null
     this.round = new this.roundTemplate()
     this.round.initPokerList(this.pokerList)
@@ -71,17 +78,24 @@ var Game = function () {
     this.round.initPlayerSupplyRule(this.playerSupplyRule)
     this.round.initBankererSupplyRule(this.bankererSupplyRule)
     this.round.initFanPi(this.fanPi)
+    this.round.initOdds(this.odds)
 
-    this.round.initRoundTime(3000)
+    this.round.initRoundTime(1000)
     this.round.onChange((c) => { console.log('剩下' + c) })
     this.round.onComplete((res) => {
-      console.log('牌局結束')
-      console.log(res)
-      setTimeout(() => {
-        this.startNewRound()
-      }, 1000)
+      console.log('倒數結束')
+      console.log(res.users_result)
+      this.userCount = 0
+      this.state = 0
+      setTimeout(this.reStartCheck.bind(this), 1000)
     })
     this.round.start()
+  }
+
+  this.reStartCheck = function () {
+    if (this.userCount !== 0) {
+      this.startNewRound()
+    }
   }
 }
 

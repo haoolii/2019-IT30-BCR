@@ -24,11 +24,11 @@ router.post('/login', (req, res) => {
           balance: userInfo.balance
         })
       } else {
-        res.status(401).json({ error: 'Invalid login. Please try again.' })
+        res.status(401).json({ error: '帳號或是密碼有誤！' })
       }
     })
     .catch(err => {
-      res.status(400).json({ error: err })
+      res.status(400).json({ error: '帳號或是密碼有誤！' })
     })
 })
 
