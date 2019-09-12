@@ -1,0 +1,16 @@
+{
+  "1": {
+    "online": false,
+    "status": 0,
+    "bet": {
+      "banker": 0,
+      "player": 0,
+      "bankerking": 0,
+      "playerking": 0,
+      "tie": 0,
+      "tiepair": 0,
+      "bpair": 0,
+      "ppair": 0
+    }
+  }
+}
