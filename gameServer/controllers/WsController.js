@@ -6,13 +6,21 @@ const TableController = require('./TableController')
 
 var wsController = function() {
   var io = null
-
+  var usersSocket = []
   this.initSocket = function(http) {
     io = require('socket.io')(http)
   }
 
+  this.notify = function(cmd, data) {
+    for (var socket of usersSocket) {
+      socket.emit(cmd, data)
+    }
+  }
+
   mockio.on('connection', function(socket) {
     socket.emit('SYS', 'YOU ARE CONNECTED!')
+
+    usersSocket.push(socket)
 
     socket.on(cmd.REQ_USER_LOGIN, id => {
       setTimeout(() => {
@@ -29,6 +37,8 @@ var wsController = function() {
     socket.on(cmd.REQ_USER_BET_INFO, id => {
       BetController.GET_USER_BETINFO(id).then(data => {
         socket.emit(cmd.RES_USER_BET_INFO, data)
+      }).catch(err => {
+        socket.emit(cmd.RES_USER_BET_INFO, err)
       })
     })
 

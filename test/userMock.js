@@ -49,7 +49,9 @@ var userMock = function(id) {
   this.disconnect = function() {
     mockio.emit('disconnect')
   }
-
+  this.socket.on('NTF', data => {
+    console.log('NTF' + JSON.stringify(data))
+  })
   this.login = function() {
     this.socket.emit(cmd.REQ_USER_LOGIN, this.socket)
     _req_wait(cmd.RES_USER_LOGIN).then(res => {
