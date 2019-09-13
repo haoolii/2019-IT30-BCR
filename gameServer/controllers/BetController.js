@@ -3,51 +3,54 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./db/bets.json')
 const db = low(adapter)
 
-var betController = function() {
-  function _valid(res, err = 'BETINFO ERROR') {
+var betController = function () {
+  function _valid (res, err = 'BETINFO ERROR') {
     return new Promise((resolve, reject) => {
       res ? resolve(res) : reject(err)
     })
   }
 
-  function _CREATE(id, data) {
+  function _CREATE (id, data) {
     return _valid(db.set(id, data).write()).then(() => {
       return _valid(db.get(id).value())
     })
   }
 
-  function _READ(id) {
+  function _READ (id) {
     return _valid(db.get(id).value())
   }
 
-  function _UPDATE(id, data) {
+  function _UPDATE (id, data) {
+    console.log('_update')
+    console.log(data)
     return _valid(db.get(id).value()).then(r => {
       return _valid(
         db
           .get(id)
+          .get('bet')
           .assign(data)
           .write()
       )
     })
   }
 
-  function _DELETE(id) {
+  function _DELETE (id) {
     return _valid(db.unset(id).write())
   }
 
-  this.REMOVE_USER_BETINFO = function(id) {
+  this.REMOVE_USER_BETINFO = function (id) {
     return _DELETE(id)
   }
 
-  this.UPDATE_USER_BETINFO = function(id, betinfo) {
+  this.UPDATE_USER_BETINFO = function (id, betinfo) {
     return _UPDATE(id, betinfo)
   }
 
-  this.GET_USER_BETINFO = function(id) {
+  this.GET_USER_BETINFO = function (id) {
     return _READ(id)
   }
 
-  this.CREATE_USER_BETINFO = function(id, betinfo) {
+  this.CREATE_USER_BETINFO = function (id, betinfo) {
     return _CREATE(id, betinfo)
   }
 }

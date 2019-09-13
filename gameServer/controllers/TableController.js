@@ -2,15 +2,15 @@ const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./db/tables.json')
 const db = low(adapter)
-db.defaults({ tables: [] }).write()
-var tableController = function() {
-  function _valid(res, err = 'TBINFO ERROR') {
+
+var tableController = function () {
+  function _valid (res, err = 'TBINFO ERROR') {
     return new Promise((resolve, reject) => {
       res ? resolve(res) : reject(err)
     })
   }
 
-  function _CREATE(data) {
+  function _CREATE (data) {
     return _valid(
       db
         .get('tables')
@@ -27,33 +27,20 @@ var tableController = function() {
     })
   }
 
-  function _READ(data) {
+  function _READ ({ tbid }) {
+    return _valid(db.get(tbid).value())
+  }
+
+  function _UPDATE ({ tbid, data }) {
     return _valid(
       db
-        .get('tables')
-        .find(data)
-        .value()
+        .get(tbid)
+        .assign(data)
+        .write()
     )
   }
 
-  function _UPDATE({ tbid, data }) {
-    return _valid(
-      db
-        .get('tables')
-        .find({ tbid: tbid })
-        .value()
-    ).then(r => {
-      return _valid(
-        db
-          .get('tables')
-          .find(r)
-          .assign(data)
-          .write()
-      )
-    })
-  }
-
-  function _DELETE({ tbid }) {
+  function _DELETE ({ tbid }) {
     return _valid(
       db
         .get('tables')
@@ -62,8 +49,18 @@ var tableController = function() {
     )
   }
 
-  this.GET_TB_INFO = function(tbid) {
-    return _READ({tbid: tbid})
+  this.GET_TB_INFO = function (tbid) {
+    return _READ({ tbid: tbid })
+  }
+
+  this.USET_LOGIN_TB = function (id, tbid) {
+    console.log(`id ${id} tbid ${tbid}`)
+    _READ({ tbid: tbid }).then(tb => {
+      tb.users.push(id)
+      return tb.users
+    }).then(us => {
+      return _UPDATE({ tbid: tbid, data: { 'users': us } })
+    })
   }
 }
 

@@ -2,7 +2,7 @@ const mockSocket = require('../gameServer/mock/mockSocket')
 const mockio = require('../gameServer/mock/mockio')
 const cmd = require('../cmd')
 
-var userMock = function(id) {
+var userMock = function (id) {
   this.id = id
   this.socket = new mockSocket(this.id)
   var _req_wait = cmd => {
@@ -42,45 +42,64 @@ var userMock = function(id) {
     console.log('SYS: ' + res)
   })
 
-  this.connect = function() {
+  this.connect = function () {
     mockio.emit('connection', this.socket)
   }
 
-  this.disconnect = function() {
-    mockio.emit('disconnect')
+  this.disconnect = function () {
+    this.socket.emit('disconnect', this.socket)
   }
   this.socket.on('NTF', data => {
     console.log('NTF' + JSON.stringify(data))
   })
-  this.login = function() {
-    this.socket.emit(cmd.REQ_USER_LOGIN, this.socket)
+
+  this.login = function () {
+    this.socket.emit(cmd.REQ_USER_LOGIN, { tbid: '1' })
     _req_wait(cmd.RES_USER_LOGIN).then(res => {
       console.log('hay: ' + res)
     })
   }
 
-  this.getBetInfo = function() {
-    this.socket.emit(cmd.REQ_USER_BET_INFO, this.id)
+  this.getBetInfo = function () {
+    this.socket.emit(cmd.REQ_USER_BET_INFO)
     _req_wait(cmd.RES_USER_BET_INFO).then(res => {
       console.log('BET_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.getUserInfo = function() {
-    this.socket.emit(cmd.REQ_USER_INFO, this.id)
+  this.getUserInfo = function () {
+    this.socket.emit(cmd.REQ_USER_INFO)
     _req_wait(cmd.RES_USER_INFO).then(res => {
       console.log('USER_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.getTBInfo = function() {
-    this.socket.emit(cmd.REQ_TB_INFO, '1')
+  this.getTBInfo = function () {
+    this.socket.emit(cmd.REQ_TB_INFO, { tbid: '1' })
     _req_wait(cmd.RES_TB_INFO).then(res => {
       console.log('TB_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.logout = function() {
+  this.betout = function () {
+    this.socket.emit(cmd.REQ_USER_BETOUT, {
+      bet: {
+        banker: 100000,
+        player: 0,
+        bankerking: 0,
+        playerking: 0,
+        tie: 1000,
+        tiepair: 0,
+        bpair: 0,
+        ppair: 0
+      }
+    })
+    _req_wait(cmd.RES_USER_BETOUT).then(res => {
+      console.log('BETOUT: ' + JSON.stringify(res))
+    })
+  }
+
+  this.logout = function () {
     this.socket.emit('disconnect')
   }
 }
