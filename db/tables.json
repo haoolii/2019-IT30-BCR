@@ -16,29 +16,6 @@
       "userCount": 0
     },
     "history": [],
-    "users": [
-      "1",
-      "1"
-    ],
-    "user": "213"
-  },
-  "2": {
-    "tbid": "2",
-    "total": 0,
-    "pool": {
-      "banker": 0,
-      "player": 0,
-      "bankerking": 0,
-      "playerking": 0,
-      "tie": 0,
-      "tiepair": 0,
-      "bpair": 0,
-      "ppair": 0
-    },
-    "info": {
-      "userCount": 0
-    },
-    "history": [],
     "users": []
   }
 }

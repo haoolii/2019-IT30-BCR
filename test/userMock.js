@@ -84,11 +84,11 @@ var userMock = function (id) {
   this.betout = function () {
     this.socket.emit(cmd.REQ_USER_BETOUT, {
       bet: {
-        banker: 100000,
+        banker: 1000,
         player: 0,
-        bankerking: 0,
-        playerking: 0,
-        tie: 1000,
+        bankerking: 1000,
+        playerking: 1000,
+        tie: 0,
         tiepair: 0,
         bpair: 0,
         ppair: 0

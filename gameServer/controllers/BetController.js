@@ -21,8 +21,6 @@ var betController = function () {
   }
 
   function _UPDATE (id, data) {
-    console.log('_update')
-    console.log(data)
     return _valid(db.get(id).value()).then(r => {
       return _valid(
         db
@@ -50,8 +48,26 @@ var betController = function () {
     return _READ(id)
   }
 
+  this.UPDATE_USER_BETOUT = function (id, betinfo) {
+    return _READ(id).then(data => {
+      data.bet["banker"] += betinfo["banker"]
+      data.bet["player"] += betinfo["player"]
+      data.bet["bankerking"] += betinfo["bankerking"]
+      data.bet["playerking"] += betinfo["playerking"]
+      data.bet["tie"] += betinfo["tie"]
+      data.bet["tiepair"] += betinfo["tiepair"]
+      data.bet["bpair"] += betinfo["bpair"]
+      data.bet["ppair"] += betinfo["ppair"]
+      return _UPDATE(id, data.bet)
+    })
+  }
+
   this.CREATE_USER_BETINFO = function (id, betinfo) {
-    return _CREATE(id, betinfo)
+    return _CREATE(id, {
+      "online": false,
+      "status": 0,
+      "bet": betinfo
+    })
   }
 }
 

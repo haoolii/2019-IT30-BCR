@@ -1,13 +1,33 @@
 const { Game } = require('../core')
 const config = require('../config')
+const cmd = require('../../cmd')
 const { preparePoker, fanPi, timeClock } = require('../lib')
-const WsController = require('./WsController')
-const UserController = require('./BetController')
+const { calcBetTotal } = require('../utils')
+const BetController = require('./BetController')
+const UserController = require('./UserController')
+const TableController = require('./TableController')
 
 var GameController = function () {
   this.game = new Game()
   this.poker = null
   this.pokerList = []
+  this.wsc = null
+
+  this.initWs = function (_wsc) {
+    this.wsc = _wsc
+  }
+
+  var notifyPeer = function (id, ntf, data) {
+    this.wsc.notifyPeer(id, ntf, data)
+  }
+
+  var notifyAll = function (ntf, data) {
+    this.wsc.notifyAll(ntf, data)
+  }
+
+  var gameComplete = function (res) {
+    console.log(res)
+  }
 
   this.beforeCreated = function () {
     try {
@@ -33,11 +53,43 @@ var GameController = function () {
         console.log('onChange' + res)
       })
       this.game.onComplete((res) => {
-        console.log(res)
+        gameComplete(res)
       })
     } catch (err) {
       console.log(`ERR ${err}`)
     }
+  }
+
+  this.onWs = function (reqkey, id, data) {
+    return new Promise((resolve, reject) => {
+      switch (reqkey) {
+        case cmd.REQ_USER_SITDOWN:
+          break
+        case cmd.REQ_USER_LOGIN:
+          console.log('case cmd.REQ_USER_LOGIN:')
+          break
+        case cmd.REQ_USER_BETOUT:
+          var _balance = 0
+          UserController.GET_USER_INFO(id).then(({ balance }) => {
+            if (calcBetTotal(data.bet) > balance) throw ('餘額不足')
+            _balance = balance
+            return BetController.UPDATE_USER_BETOUT(id, data.bet)
+          }).then(betinfo => {
+            return UserController.UPDATE_USER_INFO(id, { balance: _balance - calcBetTotal(data.bet) })
+          }).then(userinfo => {
+            // console.log(userinfo)
+          })
+            .catch(reject)
+          break
+        case cmd.REQ_USER_BET_INFO:
+          BetController.GET_USER_BETINFO(id).then(resolve).catch(reject)
+          break
+        case cmd.REQ_TB_INFO:
+          break
+        case cmd.REQ_USER_INFO:
+          break
+      }
+    })
   }
   this.beforeCreated()
 }

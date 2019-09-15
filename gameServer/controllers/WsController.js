@@ -3,58 +3,69 @@ const cmd = require('../../cmd')
 const BetController = require('./BetController')
 const UserController = require('./UserController')
 const TableController = require('./TableController')
+const GameController = require('./GameController')
 
-var wsController = function () {
+var WsController = function () {
   var io = null
   var usersSocket = {}
+
+  GameController.initWs(this)
 
   this.initSocket = function (http) {
     io = require('socket.io')(http)
   }
 
+  this.notifyAll = function (ntf, data) {
+    console.log(Object.keys(usersSocket))
+  }
+
+  this.notifyPeer = function (ntf, id, data) {
+    if (usersSocket[id]) {
+      usersSocket[id].emit(ntf, data)
+    } else {
+      console.log('NOT CONNECTED')
+    }
+  }
+
   mockio.on('connection', function (socket) {
     socket.emit('SYS', 'YOU ARE CONNECTED!')
+
+    var rqs = (reqkey, reskey, id, data) => {
+      GameController
+        .onWs(reqkey, id, data)
+        .then(res => {
+          socket.emit(reskey, res)
+        })
+        .catch(err => {
+          socket.emit(reskey, err)
+        })
+    }
+
     usersSocket[socket.id] = socket
 
-    socket.on(cmd.REQ_USER_LOGIN, ({ tbid }) => {
-      TableController.USET_LOGIN_TB(socket.id, tbid)
-      setTimeout(() => {
-        socket.emit(cmd.RES_USER_LOGIN, '成功登入')
-      }, 500)
+
+    socket.on(cmd.REQ_USER_SITDOWN, data => {
+      rqs(cmd.REQ_USER_SITDOWN, cmd.RES_USER_SITDOWN, socket.id, data)
     })
 
-    socket.on(cmd.REQ_USER_INFO, () => {
-      UserController.GET_USER_INFO(socket.id).then(data => {
-        socket.emit(cmd.RES_USER_INFO, data)
-      })
+    socket.on(cmd.REQ_USER_LOGIN, data => {
+      rqs(cmd.REQ_USER_LOGIN, cmd.RES_USER_LOGIN, socket.id, data)
     })
 
-    socket.on(cmd.REQ_USER_BET_INFO, () => {
-      BetController.GET_USER_BETINFO(socket.id).then(data => {
-        socket.emit(cmd.RES_USER_BET_INFO, data)
-      }).catch(err => {
-        socket.emit(cmd.RES_USER_BET_INFO, err)
-      })
+    socket.on(cmd.REQ_USER_INFO, data => {
+      rqs(cmd.REQ_USER_INFO, cmd.RES_USER_INFO, socket.id, data)
     })
 
-    socket.on(cmd.REQ_TB_INFO, ({ tbid }) => {
-      TableController.GET_TB_INFO(tbid).then(data => {
-        socket.emit(cmd.RES_TB_INFO, data)
-      }).catch(err => {
-        socket.emit(cmd.RES_TB_INFO, err)
-      })
+    socket.on(cmd.REQ_USER_BET_INFO, data => {
+      rqs(cmd.REQ_USER_BET_INFO, cmd.RES_USER_BET_INFO, socket.id, data)
     })
 
-    socket.on(cmd.REQ_USER_BETOUT, ({ bet }) => {
-      BetController.GET_USER_BETINFO('2').then((r) => {
-        console.log('exist')
-      }, () => {
-        BetController.CREATE_USER_BETINFO('2', bet)
-      })
-      // BetController.UPDATE_USER_BETINFO(socket.id, bet)
-      // setTimeout(() => {
-      //   socket.emit(cmd.RES_USER_LOGIN, 'success')
-      // }, 500)
+    socket.on(cmd.REQ_TB_INFO, data => {
+      rqs(cmd.REQ_TB_INFO, cmd.RES_TB_INFO, socket.id, data)
+    })
+
+    socket.on(cmd.REQ_USER_BETOUT, data => {
+      rqs(cmd.REQ_USER_BETOUT, cmd.RES_USER_BETOUT, socket.id, data)
     })
 
 
@@ -66,4 +77,4 @@ var wsController = function () {
     })
   })
 }
-module.exports = new wsController()
+module.exports = new WsController()
