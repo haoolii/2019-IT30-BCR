@@ -44,8 +44,8 @@ var WsController = function () {
     usersSocket[socket.id] = socket
 
 
-    socket.on(cmd.REQ_USER_SITDOWN, data => {
-      rqs(cmd.REQ_USER_SITDOWN, cmd.RES_USER_SITDOWN, socket.id, data)
+    socket.on(cmd.REQ_USER_TB_SITDOWN, data => {
+      rqs(cmd.REQ_USER_TB_SITDOWN, cmd.RES_USER_TB_SITDOWN, socket.id, data)
     })
 
     socket.on(cmd.REQ_USER_LOGIN, data => {

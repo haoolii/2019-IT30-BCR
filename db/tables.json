@@ -2,6 +2,7 @@
   "1": {
     "tbid": "1",
     "total": 0,
+    "status": 0,
     "pool": {
       "banker": 0,
       "player": 0,
@@ -16,6 +17,8 @@
       "userCount": 0
     },
     "history": [],
-    "users": []
+    "users": [
+      "1"
+    ]
   }
 }

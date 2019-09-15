@@ -17,8 +17,8 @@ cmd.RES_TB_INFO = '00000008'
 cmd.REQ_USER_INFO = '00000009'
 cmd.RES_USER_INFO = '00000010'
 
-cmd.REQ_USER_SITDOWN = '00000010'
-cmd.RES_USER_SITDOWN = '00000011'
+cmd.REQ_USER_TB_SITDOWN = '00000010'
+cmd.REQ_USER_TB_SITDOWN = '00000011'
 
 /*=================================================
   NTF 100

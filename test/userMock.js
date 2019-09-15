@@ -81,6 +81,13 @@ var userMock = function (id) {
     })
   }
 
+  this.tbsit = function () {
+    this.socket.emit(cmd.REQ_USER_TB_SITDOWN, { tbid: '1' })
+    _req_wait(cmd.RES_USER_TB_SITDOWN).then(res => {
+      console.log('TB_SIT_INFO: ' + JSON.stringify(res))
+    })
+  }
+
   this.betout = function () {
     this.socket.emit(cmd.REQ_USER_BETOUT, {
       bet: {

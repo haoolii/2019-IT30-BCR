@@ -12,8 +12,11 @@ let userm = new userMock('1')
 userm.connect()
 userm.login()
 // userm.logout()
-userm.getBetInfo()
+// userm.getBetInfo()
+
+// userm.tbsit()
 // userm.getUserInfo()
-userm.getTBInfo()
+// userm.getTBInfo()
+
 // userm.disconnect()
 userm.betout()

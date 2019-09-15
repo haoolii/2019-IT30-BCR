@@ -53,10 +53,9 @@ var tableController = function () {
     return _READ({ tbid: tbid })
   }
 
-  this.USET_LOGIN_TB = function (id, tbid) {
-    console.log(`id ${id} tbid ${tbid}`)
-    _READ({ tbid: tbid }).then(tb => {
-      tb.users.push(id)
+  this.USER_SITDOWN = function (tbid, id) {
+    return _READ({ tbid: tbid }).then(tb => {
+      if (tb.users.indexOf(id) === -1) tb.users.push(id)
       return tb.users
     }).then(us => {
       return _UPDATE({ tbid: tbid, data: { 'users': us } })

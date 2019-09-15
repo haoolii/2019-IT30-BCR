@@ -3,10 +3,10 @@
     "online": false,
     "status": 0,
     "bet": {
-      "banker": 1000,
+      "banker": 11000,
       "player": 0,
-      "bankerking": 1000,
-      "playerking": 1000,
+      "bankerking": 11000,
+      "playerking": 11000,
       "tie": 0,
       "tiepair": 0,
       "bpair": 0,
