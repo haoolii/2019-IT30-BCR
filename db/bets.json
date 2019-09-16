@@ -6,7 +6,7 @@
     "kickcount": 5,
     "bet": {
       "banker": 0,
-      "player": 0,
+      "player": 2000,
       "bankerking": 0,
       "playerking": 0,
       "tie": 0,

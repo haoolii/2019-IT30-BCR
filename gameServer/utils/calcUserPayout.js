@@ -5,7 +5,7 @@
  * @param {*} payoutBet 結果
  * @param {*} oddsBet 賠率
  */
-const userPayout = function(userBet, payoutBet, oddsBet) {
+const calcUserPayout = function(userBet, payoutBet, oddsBet) {
   var _userBet = Object.assign({}, userBet)
   var _payoutBet = Object.assign({}, payoutBet)
   var _oddsBet = Object.assign({}, oddsBet)
@@ -19,4 +19,4 @@ const userPayout = function(userBet, payoutBet, oddsBet) {
   _userBet["ppair"] = _userBet["ppair"] * _oddsBet["ppair"] * _payoutBet["ppair"]
   return _userBet
 }
-module.exports = userPayout
+module.exports = calcUserPayout

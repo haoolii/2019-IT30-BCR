@@ -33,14 +33,8 @@ var WsController = function() {
 
     var rqs = (reqkey, reskey, id, data) => {
       MainController.onWs(reqkey, id, data)
-        .then(res => {
-          console.log('res' + res)
-          socket.emit(reskey, res)
-        })
-        .catch(err => {
-          console.log('err' + err)
-          socket.emit(reskey, err)
-        })
+        .then(res => socket.emit(reskey, { result: res }))
+        .catch(err => socket.emit(reskey, { error: err }))
     }
 
     usersSocket[socket.id] = socket
