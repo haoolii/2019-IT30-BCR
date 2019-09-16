@@ -1,6 +1,6 @@
-const BetController = require('./BetController')
-const UserController = require('./UserController')
-const TableController = require('./TableController')
+const BetController = require('../controllers/BetController')
+const UserController = require('../controllers/UserController')
+const TableController = require('../controllers/TableController')
 const { calcBetTotal, calcUserPayout } = require('../utils')
 const config = require('../config')
 
@@ -9,7 +9,7 @@ const config = require('../config')
  * @param {*} id
  * @param {*} betResult
  */
-var peerPayout = function(id, betResult) {
+var peerPayout = function (id, betResult) {
   return new Promise(async (resolve, reject) => {
     try {
       var _userBetInfo = await BetController.GET_USER_BETINFO(id)
@@ -55,7 +55,7 @@ var peerPayout = function(id, betResult) {
  * @param {*} tbid
  * @param {*} id
  */
-var sitdown = function(tbid, id) {
+var sitdown = function (tbid, id) {
   return new Promise(async (resolve, reject) => {
     try {
       await TableController.USER_SITDOWN(tbid, id)

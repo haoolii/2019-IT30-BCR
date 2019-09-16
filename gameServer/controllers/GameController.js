@@ -1,13 +1,13 @@
 const { Game } = require('../core')
 const config = require('../config')
 const cmd = require('../../cmd')
-const { preparePoker, fanPi, timeClock } = require('../lib')
+const { preparePoker, fanPi, timeClock } = require('../core')
 const TableController = require('./TableController')
 
-var GameController = function() {
+var GameController = function () {
   this.gameList = {}
 
-  this.buildGame = function(tbid) {
+  this.buildGame = function (tbid) {
     var _game_obj = {
       poker: null,
       pokerList: [],
@@ -16,7 +16,7 @@ var GameController = function() {
     this.gameList[tbid] = _game_obj
     gameInit(_game_obj)
   }
-  var gameInit = function(_game_obj) {
+  var gameInit = function (_game_obj) {
     try {
       _game_obj.poker = config.poker
       _game_obj.pokerList = preparePoker(
@@ -39,15 +39,15 @@ var GameController = function() {
     }
   }
 
-  this.onChange = function(tbid, listener) {
+  this.onChange = function (tbid, listener) {
     this.gameList[tbid].game.onChange(betchange => listener(betchange))
   }
 
-  this.onComplete = function(tbid, listener) {
+  this.onComplete = function (tbid, listener) {
     this.gameList[tbid].game.onComplete(betresult => listener(betresult))
   }
 
-  this.onStatus = function(tbid, listener) {
+  this.onStatus = function (tbid, listener) {
     this.gameList[tbid].game.onStatus(status => listener(status))
   }
 

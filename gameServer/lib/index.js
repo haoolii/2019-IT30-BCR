@@ -1,21 +1,10 @@
 'use strict'
-
-var preparePoker = require('./preparePoker')
-var grabRandomPoker = require('./grabRandomPoker')
-var calcPokerPoint = require('./calcPokerPoint')
-var shouldPlayerSupplyPoker = require('./shouldPlayerSupplyPoker')
-var shouldBankerSupplyPoker = require('./shouldBankerSupplyPoker')
-var fanPi = require('./fanPi')
-var timeClock = require('./timeClock')
-var userPayout = require('./userPayout')
+var $R = require('./$R')
+var $G = require('./$G')
+var dbBet = require('./dbBet')
 
 module.exports = {
-  preparePoker,
-  grabRandomPoker,
-  calcPokerPoint,
-  shouldPlayerSupplyPoker,
-  shouldBankerSupplyPoker,
-  fanPi,
-  timeClock,
-  userPayout
+  $R,
+  $G,
+  dbBet
 }
