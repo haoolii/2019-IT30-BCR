@@ -3,7 +3,8 @@ var { shallowObject } = require('../utils')
  * 引入
  */
 
-var Game = function () {
+var Game = function (tbid) {
+  this.tbid = tbid
   this.pokerList = null
   this.timeClock = null
   this.notify = null
@@ -17,6 +18,7 @@ var Game = function () {
 
   var _completeCbs = []
   var _changeCbs = []
+  var _statusCbs = []
 
   this.initPokerList = function (pokerList) { this.pokerList = pokerList }
   this.initgameTime = function (time) { this.gameTime = time }
@@ -38,14 +40,14 @@ var Game = function () {
     if (!this.odds) throw new Error('odds is null')
   }
   this.onComplete = function (cb) { _completeCbs.push(cb) }
+  this.onStatus = function (cb) { _statusCbs.push(cb) }
   this.onChange = function (cb) { _changeCbs.push(cb) }
 
   var emitComplete = function () {
-    console.log('emitComplete')
     this.state = 0
     var fan = setTimeout(() => { this.fanPiProcess() }, 1000)
-    var calc = setTimeout(() => { this.calcResultProcess() }, 2000)
-    var ntf = setTimeout(() => { _completeCbs.map(e => e(this.data)) }, 3000)
+    var calc = setTimeout(() => { this.calcResultProcess() }, 1300)
+    var ntf = setTimeout(() => { _completeCbs.map(e => e(this.data)) }, 1600)
     var last = setTimeout(() => {
       clearTimeout(fan)
       clearTimeout(calc)
@@ -56,6 +58,8 @@ var Game = function () {
 
   var emitChange = function (c) { _changeCbs.map(e => e(c)) }
 
+  var emitStatus = function (s) { _statusCbs.map(e => e(s)) }
+
   this.startCountdown = function () {
     if (this.state) return
     this.state = 1
@@ -65,14 +69,14 @@ var Game = function () {
   }
 
   this.fanPiProcess = function () {
-    console.log('開牌中')
+    emitStatus(`tbid: ${tbid} is fanPiProcess`)
     let res = this.fanPi(this.pokerList, this.playerSupplyRule, this.bankererSupplyRule)
     delete res.pokerList
     this.data['poker_result'] = res
   }
 
   this.calcResultProcess = function () {
-    console.log('計算開牌輸贏結果')
+    emitStatus(`tbid: ${tbid} is calcResultProcess`)
     var player = this.data['poker_result'].player
     var banker = this.data['poker_result'].banker
     var playerpoint = this.data['poker_result'].playerPoint

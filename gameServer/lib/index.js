@@ -7,6 +7,7 @@ var shouldPlayerSupplyPoker = require('./shouldPlayerSupplyPoker')
 var shouldBankerSupplyPoker = require('./shouldBankerSupplyPoker')
 var fanPi = require('./fanPi')
 var timeClock = require('./timeClock')
+var userPayout = require('./userPayout')
 
 module.exports = {
   preparePoker,
@@ -15,5 +16,6 @@ module.exports = {
   shouldPlayerSupplyPoker,
   shouldBankerSupplyPoker,
   fanPi,
-  timeClock
+  timeClock,
+  userPayout
 }

@@ -1,12 +1,14 @@
 {
   "1": {
+    "id": 1,
     "online": false,
-    "status": 0,
+    "status": 1,
+    "kickcount": 5,
     "bet": {
-      "banker": 11000,
+      "banker": 0,
       "player": 0,
-      "bankerking": 11000,
-      "playerking": 11000,
+      "bankerking": 0,
+      "playerking": 0,
       "tie": 0,
       "tiepair": 0,
       "bpair": 0,

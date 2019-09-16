@@ -69,5 +69,6 @@ var UserController = function () {
   this.UPDATE_USER_INFO = function (id, data) {
     return _UPDATE(id, data)
   }
+
 }
 module.exports = new UserController()

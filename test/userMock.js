@@ -2,7 +2,7 @@ const mockSocket = require('../gameServer/mock/mockSocket')
 const mockio = require('../gameServer/mock/mockio')
 const cmd = require('../cmd')
 
-var userMock = function (id) {
+var userMock = function(id) {
   this.id = id
   this.socket = new mockSocket(this.id)
   var _req_wait = cmd => {
@@ -42,59 +42,79 @@ var userMock = function (id) {
     console.log('SYS: ' + res)
   })
 
-  this.connect = function () {
+  this.socket.on(cmd.MSG_TB_FANPI, res => {
+    console.log(res)
+  })
+
+  this.socket.on(cmd.MSG_BT_PAYOUT, res => {
+    console.log(res)
+  })
+
+  this.socket.on(cmd.MSG_USER_INFO, res => {
+    console.log('MSG_USER_INFO')
+    console.log(res)
+  })
+  this.socket.on(cmd.MSG_TB_COUNTTIME, time => {
+    console.log('剩下= ' + time)
+  })
+
+  this.socket.on(cmd.MSG_TB_KICKOUT, res => {
+    console.log('三局沒下注，被踢出了')
+  })
+
+  this.connect = function() {
     mockio.emit('connection', this.socket)
   }
 
-  this.disconnect = function () {
+  this.disconnect = function() {
     this.socket.emit('disconnect', this.socket)
   }
   this.socket.on('NTF', data => {
     console.log('NTF' + JSON.stringify(data))
   })
 
-  this.login = function () {
+  this.login = function() {
     this.socket.emit(cmd.REQ_USER_LOGIN, { tbid: '1' })
     _req_wait(cmd.RES_USER_LOGIN).then(res => {
       console.log('hay: ' + res)
     })
   }
 
-  this.getBetInfo = function () {
+  this.getBetInfo = function() {
     this.socket.emit(cmd.REQ_USER_BET_INFO)
     _req_wait(cmd.RES_USER_BET_INFO).then(res => {
       console.log('BET_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.getUserInfo = function () {
+  this.getUserInfo = function() {
     this.socket.emit(cmd.REQ_USER_INFO)
     _req_wait(cmd.RES_USER_INFO).then(res => {
       console.log('USER_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.getTBInfo = function () {
+  this.getTBInfo = function() {
     this.socket.emit(cmd.REQ_TB_INFO, { tbid: '1' })
     _req_wait(cmd.RES_TB_INFO).then(res => {
       console.log('TB_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.tbsit = function () {
+  this.tbsit = function() {
     this.socket.emit(cmd.REQ_USER_TB_SITDOWN, { tbid: '1' })
     _req_wait(cmd.RES_USER_TB_SITDOWN).then(res => {
       console.log('TB_SIT_INFO: ' + JSON.stringify(res))
     })
   }
 
-  this.betout = function () {
+  this.betout = function() {
     this.socket.emit(cmd.REQ_USER_BETOUT, {
       bet: {
-        banker: 1000,
+        banker: 0,
         player: 0,
-        bankerking: 1000,
-        playerking: 1000,
+        bankerking: 0,
+        playerking: 0,
         tie: 0,
         tiepair: 0,
         bpair: 0,
@@ -106,7 +126,7 @@ var userMock = function (id) {
     })
   }
 
-  this.logout = function () {
+  this.logout = function() {
     this.socket.emit('disconnect')
   }
 }
