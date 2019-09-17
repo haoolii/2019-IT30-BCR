@@ -3,10 +3,26 @@
     "id": 1,
     "online": false,
     "status": 1,
-    "kickcount": 5,
+    "kickcount": 3,
     "bet": {
       "banker": 0,
-      "player": 2000,
+      "player": 0,
+      "bankerking": 0,
+      "playerking": 0,
+      "tie": 0,
+      "tiepair": 0,
+      "bpair": 0,
+      "ppair": 0
+    }
+  },
+  "2": {
+    "id": 2,
+    "online": false,
+    "status": 1,
+    "kickcount": 2,
+    "bet": {
+      "banker": 0,
+      "player": 0,
       "bankerking": 0,
       "playerking": 0,
       "tie": 0,

@@ -3,14 +3,14 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./db/tables.json')
 const db = low(adapter)
 
-var dbTable = function () {
-  function _valid (res, err = 'TBINFO ERROR') {
+var dbTable = function() {
+  function _valid(res, err = 'TBINFO ERROR') {
     return new Promise((resolve, reject) => {
       res ? resolve(res) : reject(err)
     })
   }
 
-  function _CREATE (data) {
+  function _CREATE(data) {
     return _valid(
       db
         .get('tables')
@@ -27,11 +27,11 @@ var dbTable = function () {
     })
   }
 
-  function _READ ({ tbid }) {
+  function _READ({ tbid }) {
     return _valid(db.get(tbid).value())
   }
 
-  function _UPDATE ({ tbid, data }) {
+  function _UPDATE({ tbid, data }) {
     return _valid(
       db
         .get(tbid)
@@ -40,7 +40,7 @@ var dbTable = function () {
     )
   }
 
-  function _DELETE ({ tbid }) {
+  function _DELETE({ tbid }) {
     return _valid(
       db
         .get('tables')
@@ -49,11 +49,11 @@ var dbTable = function () {
     )
   }
 
-  this.GET_TB_INFO = function (tbid) {
+  this.GET_TB_INFO = function(tbid) {
     return _READ({ tbid: tbid })
   }
 
-  this.ADD_TB_HISTORY = function (tbid, history) {
+  this.ADD_TB_HISTORY = function(tbid, history) {
     return _READ({ tbid: tbid })
       .then(tb => {
         var len = tb.history.length
@@ -65,7 +65,18 @@ var dbTable = function () {
       })
   }
 
-  this.USER_SITDOWN = function (tbid, id) {
+  this.KICK_OUT_USER = function(tbid, uid) {
+    return _READ({ tbid: tbid })
+      .then(tb => {
+        tb.users.splice(tb.users.indexOf(uid), 1)
+        return tb.users
+      })
+      .then(users => {
+        return _UPDATE({ tbid: tbid, data: { users: users } })
+      })
+  }
+
+  this.USER_SITDOWN = function(tbid, id) {
     return _READ({ tbid: tbid })
       .then(tb => {
         if (tb.users.indexOf(id) === -1) tb.users.push(id)

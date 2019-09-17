@@ -62,6 +62,10 @@ var userMock = function(id) {
     console.log('三局沒下注，被踢出了')
   })
 
+  this.socket.on(cmd.MSG_ERROR_NTF, err => {
+    console.log(`收到ERROR ${JSON.stringify(err)}`)
+  })
+
   this.connect = function() {
     mockio.emit('connection', this.socket)
   }

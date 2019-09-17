@@ -102,6 +102,12 @@ var dbBet = function () {
       return _UPDATE(id, { kickcount: data.kickcount })
     })
   }
+
+  this.RESET_USER_KICKCOUNT = function (id) {
+    return _READ(id).then(data => {
+      return _UPDATE(id, { kickcount: 0 })
+    })
+  }
 }
 
 module.exports = new dbBet()

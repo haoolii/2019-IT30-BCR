@@ -2,7 +2,7 @@ const { Game } = require('../core')
 const config = require('../config')
 const cmd = require('../../cmd')
 const { preparePoker, fanPi, timeClock } = require('../core')
-const TableController = require('./TableController')
+const { $G } = require('../lib')
 
 var GameController = function () {
   this.gameList = {}
@@ -28,7 +28,7 @@ var GameController = function () {
       _game_obj.game.initPokerList(_game_obj.pokerList)
       _game_obj.game.initNotify({})
       _game_obj.game.initTimeClock(timeClock)
-      _game_obj.game.initgameTime(1000)
+      _game_obj.game.initgameTime(config.bcr.time)
       _game_obj.game.initPlayerSupplyRule(config.bcr.player_rule)
       _game_obj.game.initBankererSupplyRule(config.bcr.banker_rule)
       _game_obj.game.initFanPi(fanPi)

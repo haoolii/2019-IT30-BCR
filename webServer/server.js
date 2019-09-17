@@ -28,6 +28,10 @@ exports.init = function (app) {
     res.sendFile(path.join(__dirname + '/public/admin/index.html'))
   })
 
+  app.get('/test', function (req, res) {
+    res.sendFile(path.join(__dirname + '/public/test/index.html'))
+  })
+
   app.use(function (req, res, next) {
     res.status(404).send(createError(404))
   })

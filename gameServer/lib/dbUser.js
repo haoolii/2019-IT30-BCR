@@ -67,7 +67,7 @@ var dbUser = function () {
   }
 
   this.UPDATE_USER_INFO = function (id, data) {
-    return _UPDATE(id, data)
+    return _UPDATE(id + "", data)
   }
 
 }
