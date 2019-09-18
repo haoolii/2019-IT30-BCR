@@ -1,5 +1,5 @@
 {
-  "time": 4000,
+  "time": 10000,
   "kickCount": 3,
   "banker_rule": { 
     "9": ["S", "S", "S", "S", "S", "S", "S", "S", "S", "S", "S"],

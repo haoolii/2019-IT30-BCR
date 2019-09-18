@@ -1,10 +1,17 @@
 const dbBet = require('./dbBet')
 const dbUser = require('./dbUser')
 const dbTable = require('./dbTable')
-const { calcBetTotal, calcUserPayout, combineBet, minusBet} = require('../utils')
+const {
+  calcBetTotal,
+  calcUserPayout,
+  combineBet,
+  minusBet
+} = require('../utils')
 const config = require('../config')
 const cmd = require('../../cmd')
 const $N = require('./$N')
+
+const __userjoinCbs = {}
 
 /**
  * 統計桌上下注更新桌的彩池
@@ -189,7 +196,7 @@ var payout = function(id, betResult) {
         config.bcr.odds
       )
       await minusTbPool(_userInfo.tbid, _payout_bet)
-    
+
       _payout_total = calcBetTotal(_payout_bet)
       $N.notifyPeer(id, cmd.MSG_BT_PAYOUT, _payout_bet)
       _payout_userInfo = await dbUser.UPDATE_USER_INFO(id, {
@@ -243,6 +250,47 @@ var kickCheck = function(id) {
   })
 }
 
+/**
+ * 確保有人在桌
+ * @param {*} tbid
+ */
+
+var ensureUserInTb = function(tbid) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var tbInfo = await dbTable.GET_TB_INFO(tbid)
+      if (tbInfo.users.length > 0) {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+/**
+ * 掛載偵聽使用者加入
+ * @param {*} tbid
+ * @param {*} listener
+ */
+
+var onUserJoin = function(tbid, listener) {
+  if (!__userjoinCbs[tbid]) __userjoinCbs[tbid] = []
+  __userjoinCbs[tbid].push(listener)
+}
+
+/**
+ * 觸發偵聽使用者加入
+ * @param {*} tbid
+ */
+
+var emitUserJoin = function(tbid) {
+  var args = [].slice.call(arguments, 1)
+  __userjoinCbs[tbid].map(cb => cb(...args))
+}
+
 module.exports = {
   peerPayout,
   kickCheck,
@@ -252,5 +300,8 @@ module.exports = {
   tbNotify,
   calcTbPool,
   plusTbPool,
-  minusTbPool
+  minusTbPool,
+  ensureUserInTb,
+  onUserJoin,
+  emitUserJoin
 }

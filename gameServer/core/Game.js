@@ -64,7 +64,10 @@ var Game = function (tbid) {
     if (this.state) return
     this.state = 1
     this.timeClock.onComplete(() => emitComplete.bind(this)())
-    this.timeClock.onChange(c => { emitChange.bind(this)(c) })
+    this.timeClock.onChange(c => { 
+      emitStatus(`剩餘: ${c / 1000} 秒`)
+      emitChange.bind(this)(c) 
+    })
     this.timeClock.start(this.gameTime)
   }
 

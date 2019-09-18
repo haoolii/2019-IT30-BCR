@@ -13,7 +13,7 @@ var WsController = function() {
     io = require('socket.io')(http)
     io.use(auth)
     // io
-    ___socket(mockio)
+    ___socket(io)
   }
 
   this.notifyAll = function(ntf, data) {
@@ -21,7 +21,6 @@ var WsController = function() {
   }
 
   this.notifyPeerError = function(id, err) {
-    console.log(`id: ${id} err: ${err}`)
     if (usersSocket[id]) {
       usersSocket[id].emit('99999999', { error: err })
     } else {
@@ -36,42 +35,38 @@ var WsController = function() {
       console.log('NOT CONNECTED')
     }
   }
-  // ___socket(mockio)
   var ___socket = function(_io) {
-    console.log('?')
-    mockio.on('connection', function(socket) {
-      console.log('YEAAAAAAAAAAAAAAAAAAAAAAA')
-      socket.emit('SYS', 'YOU ARE CONNECTED!')
+    _io.on('connection', function(socket) {
+      socket.emit('connect')
       var rqs = (reqkey, reskey, id, data) => {
         MainController.onWs(reqkey, id, data)
           .then(res => socket.emit(reskey, { result: res }))
           .catch(err => socket.emit(reskey, { error: err }))
       }
-
-      usersSocket[socket.id] = socket
+      usersSocket[socket._id] = socket
 
       socket.on(cmd.REQ_USER_TB_SITDOWN, data => {
-        rqs(cmd.REQ_USER_TB_SITDOWN, cmd.RES_USER_TB_SITDOWN, socket.id, data)
+        rqs(cmd.REQ_USER_TB_SITDOWN, cmd.RES_USER_TB_SITDOWN, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_LOGIN, data => {
-        rqs(cmd.REQ_USER_LOGIN, cmd.RES_USER_LOGIN, socket.id, data)
+        rqs(cmd.REQ_USER_LOGIN, cmd.RES_USER_LOGIN, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_INFO, data => {
-        rqs(cmd.REQ_USER_INFO, cmd.RES_USER_INFO, socket.id, data)
+        rqs(cmd.REQ_USER_INFO, cmd.RES_USER_INFO, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_BET_INFO, data => {
-        rqs(cmd.REQ_USER_BET_INFO, cmd.RES_USER_BET_INFO, socket.id, data)
+        rqs(cmd.REQ_USER_BET_INFO, cmd.RES_USER_BET_INFO, socket._id, data)
       })
 
       socket.on(cmd.REQ_TB_INFO, data => {
-        rqs(cmd.REQ_TB_INFO, cmd.RES_TB_INFO, socket.id, data)
+        rqs(cmd.REQ_TB_INFO, cmd.RES_TB_INFO, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_BETOUT, data => {
-        rqs(cmd.REQ_USER_BETOUT, cmd.RES_USER_BETOUT, socket.id, data)
+        rqs(cmd.REQ_USER_BETOUT, cmd.RES_USER_BETOUT, socket._id, data)
       })
 
       socket.on('disconnect', socket => {

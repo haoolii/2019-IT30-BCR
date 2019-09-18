@@ -4,14 +4,14 @@
  */
 var calcBetTotal = function (bet) {
   var total = 0
-  total += bet["banker"]
-  total += bet["player"]
-  total += bet["bankerking"]
-  total += bet["playerking"]
-  total += bet["tie"]
-  total += bet["tiepair"]
-  total += bet["bpair"]
-  total += bet["ppair"]
+  total += parseInt(bet["banker"])
+  total += parseInt(bet["player"])
+  total += parseInt(bet["bankerking"])
+  total += parseInt(bet["playerking"])
+  total += parseInt(bet["tie"])
+  total += parseInt(bet["tiepair"])
+  total += parseInt(bet["bpair"])
+  total += parseInt(bet["ppair"])
   return total
 }
 

@@ -7,11 +7,134 @@
     <title>TEST</title>
   </head>
   <body>
+    <div id="app">
+      <form action="" @submit.prevent>
+        <input type="text" placeholder="輸入token || id" v-model="token" />
+        <button @click="connect">CONNECT</button>
+      </form>
+      <button @click="sitdown">SITDOWN</button>
+      <button @click="RES_USER_BET_INFO">REQ_BET_INFO</button>
+      <button @click="REQ_USER_INFO">REQ_USER_INFO</button>
+      <button @click="REQ_TB_INFO">REQ_TB_INFO</button>
+      <textarea v-text="RES" rows="20" cols="30"></textarea>
+
+      <form action="" @submit.prevent>
+        <input type="text" size="8" v-model="banker" />
+        <input type="button" value="banker" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="player" />
+        <input type="button" value="player" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="bankerking" />
+        <input type="button" value="bankerking" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="playerking" />
+        <input type="button" value="playerking" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="tie" />
+        <input type="button" value="tie" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="tiepair" />
+        <input type="button" value="tiepair" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="bpair" />
+        <input type="button" value="bpair" @click="betout" />
+        <br />
+        <input type="text" size="8" v-model="ppair" />
+        <input type="button" value="ppair" @click="betout" />
+      </form>
+    </div>
+    <script src="./cmd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
-      const socket = io('http://localhost:3000', {
-        query: {
-          token: 'token'
+      new Vue({
+        el: '#app',
+        data: () => ({
+          socket: {},
+          token: '',
+          RES: {},
+
+          banker: 0,
+          player: 0,
+          bankerking: 0,
+          playerking: 0,
+          tie: 0,
+          tiepair: 0,
+          bpair: 0,
+          ppair: 0
+        }),
+        methods: {
+          betout() {
+            let bet = {
+              banker: this.banker,
+              player: this.player,
+              bankerking: this.bankerking,
+              playerking: this.playerking,
+              tie: this.tie,
+              tiepair: this.tiepair,
+              bpair: this.bpair,
+              ppair: this.ppair
+            }
+            this.banker = 0
+            this.player = 0
+            this.bankerking = 0
+            this.playerking = 0
+            this.tie = 0
+            this.tiepair = 0
+            this.bpair = 0
+            this.ppair = 0
+            this.socket.emit(cmd.REQ_USER_BETOUT, {
+              bet: bet
+            })
+          },
+          connect() {
+            this.connectSocket()
+          },
+          sitdown() {
+            this.socket.emit(cmd.REQ_USER_TB_SITDOWN, { tbid: '1' })
+            this.socket.on(cmd.RES_USER_TB_SITDOWN, ({ result }) => {
+              console.log('RES_USER_TB_SITDOWN: ', result)
+            })
+          },
+          RES_USER_BET_INFO() {
+            this.socket.emit(cmd.REQ_USER_BET_INFO)
+            this.socket.on(cmd.RES_USER_BET_INFO, ({ result }) => {
+              this.RES = Object.assign({}, result)
+            })
+          },
+          REQ_USER_INFO() {
+            this.socket.emit(cmd.REQ_USER_INFO)
+            this.socket.on(cmd.RES_USER_INFO, ({ result }) => {
+              this.RES = Object.assign({}, result)
+            })
+          },
+          REQ_TB_INFO() {
+            this.socket.emit(cmd.REQ_TB_INFO)
+            this.socket.on(cmd.RES_TB_INFO, ({ result }) => {
+              this.RES = Object.assign({}, result)
+            })
+          },
+          connectSocket() {
+            this.socket = io('http://localhost:3000', {
+              query: {
+                token: this.token
+              }
+            })
+            this.socket.on('connect_error', error => {})
+            this.socket.on('connect_timeout', timeout => {})
+            this.socket.on('connect', () => {
+              console.log('succc')
+            })
+
+            this.socket.on(cmd.MSG_TB_NTF, res => {
+              console.log(res)
+            })
+
+            this.socket.on(cmd.MSG_TB_KICKOUT, () => {
+              console.log('三局未下注你被踢出了！')
+            })
+          }
         }
       })
     </script>

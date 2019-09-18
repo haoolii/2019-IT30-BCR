@@ -14,8 +14,9 @@ var GameController = function() {
       pokerList: [],
       game: new Game(tbid)
     }
-    $G.setTbStatus(tbid, 0) // 0 可以下注
-    _game_obj.game.onComplete(() => $G.setTbStatus(tbid, 1)) // 1 不能下注
+
+    this.gameBetStatus(tbid, 1) // 不能下注
+    _game_obj.game.onComplete(() => this.gameBetStatus(tbid, 1)) // 不能下注
     this.gameList[tbid] = _game_obj
     gameInit(_game_obj)
   }
@@ -36,7 +37,7 @@ var GameController = function() {
       _game_obj.game.initBankererSupplyRule(config.bcr.banker_rule)
       _game_obj.game.initFanPi(fanPi)
       _game_obj.game.initOdds(config.bcr.odds)
-      _game_obj.game.start()
+      // _game_obj.game.start()
     } catch (err) {
       console.log(`ERR ${err}`)
     }
@@ -56,6 +57,15 @@ var GameController = function() {
 
   this.gameStart = function(tbid) {
     this.gameList[tbid].game.start()
+    this.gameBetStatus(tbid, 0)
+  }
+
+  this.gameBetStatus = async function(tbid, status) {
+    try {
+      await $G.setTbStatus(tbid, status)
+    } catch (err) {
+      throw err
+    }
   }
 }
 module.exports = new GameController()

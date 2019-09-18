@@ -14,6 +14,7 @@ exports.init = function (app) {
 
   app.use('/user', express.static(__dirname + '/public/user'))
   app.use('/game', express.static(__dirname + '/public/game'))
+  app.use('/test', express.static(__dirname + '/public/test'))
 
   app.use('/api', user_api)
   app.use('/admin_api', admin_api)
@@ -21,9 +22,11 @@ exports.init = function (app) {
   app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/user/index.html'))
   })
+
   app.get('/game', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/game/index.html'))
   })
+  
   app.get('/admin', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/admin/index.html'))
   })

@@ -4,6 +4,7 @@ const calcBetTotal = require('./calcBetTotal')
 const calcUserPayout = require('./calcUserPayout')
 const combineBet = require('./combineBet')
 const minusBet = require('./minusBet')
+const ensureNumber = require('./ensureNumber')
 
 module.exports = {
   getRandom,
@@ -11,5 +12,6 @@ module.exports = {
   calcBetTotal,
   calcUserPayout,
   combineBet,
-  minusBet
+  minusBet,
+  ensureNumber
 }

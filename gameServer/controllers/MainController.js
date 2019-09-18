@@ -7,20 +7,35 @@ var MainController = function() {
   this.game = new Game()
   this.poker = null
   this.pokerList = []
+  this.games = {}
   this.ws = null
 
-  GameController.buildGame('1')
-  GameController.onChange('1', c => {
-    console.log(`c ${c}`)
-  })
-  GameController.onComplete('1', async r => {
-    await $G.calcTbPool('1')
-    await $G.tbPayout('1', r)
-  })
-  GameController.onStatus('1', status => {
-    $G.tbNotify('1', status)
-  })
-  // GameController.gameStart('1')
+  this.initGames = async function(__tbid) {
+    if (this.games[__tbid]) return
+    var anyUserInTb = await $G.ensureUserInTb(__tbid)
+    if (anyUserInTb) {
+      this.games[__tbid] = GameController
+      GameController.buildGame(__tbid)
+      GameController.onChange(__tbid, c => console.log(`剩餘: ${c} ms`))
+      GameController.onStatus(__tbid, status => $G.tbNotify(__tbid, status))
+      GameController.onComplete(__tbid, async r => {
+        await $G.calcTbPool(__tbid)
+        await $G.tbPayout(__tbid, r)
+        this.games[__tbid] = null
+        setTimeout(() => this.initGames(__tbid), 2000)
+      })
+      GameController.gameStart(__tbid)
+      delete this.games.__tbid
+    }
+  }
+
+  this.initTb = function(__tbid) {
+    $G.onUserJoin(__tbid, () => {
+      this.initGames(__tbid)
+    })
+  }
+
+  this.initTb('1')
 
   this.initWs = function(_ws) {
     this.ws = _ws
@@ -47,6 +62,7 @@ var MainController = function() {
           _R($R.tbInfo(id))
           break
         case cmd.REQ_USER_INFO:
+          _R($R.userInfo(id))
           break
       }
     })

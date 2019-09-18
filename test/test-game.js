@@ -6,7 +6,7 @@ const userMock = require('./userMock')
 
 Ws.initSocket()
 
-var userFake = function (id) {
+var userFake = function(id) {
   let userm = new userMock(id)
   userm.connect()
   // userm.login()
@@ -18,9 +18,16 @@ var userFake = function (id) {
   userm.betout()
   // userm.logout()
   // userm.disconnect()
+
+  setTimeout(() => {
+    userm.tbsit()
+    setTimeout(() => {
+      userm.betout()
+    }, 1000)
+  }, 16000)
 }
 
-userFake("1")
+userFake('1')
 setTimeout(() => {
-  userFake("2")
+  userFake('2')
 }, 2000)
