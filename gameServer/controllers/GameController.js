@@ -4,19 +4,22 @@ const cmd = require('../../cmd')
 const { preparePoker, fanPi, timeClock } = require('../core')
 const { $G } = require('../lib')
 
-var GameController = function () {
+var GameController = function() {
   this.gameList = {}
 
-  this.buildGame = function (tbid) {
+  this.buildGame = async function(tbid) {
     var _game_obj = {
+      tbid: tbid,
       poker: null,
       pokerList: [],
       game: new Game(tbid)
     }
+    $G.setTbStatus(tbid, 0) // 0 可以下注
+    _game_obj.game.onComplete(() => $G.setTbStatus(tbid, 1)) // 1 不能下注
     this.gameList[tbid] = _game_obj
     gameInit(_game_obj)
   }
-  var gameInit = function (_game_obj) {
+  var gameInit = function(_game_obj) {
     try {
       _game_obj.poker = config.poker
       _game_obj.pokerList = preparePoker(
@@ -33,25 +36,25 @@ var GameController = function () {
       _game_obj.game.initBankererSupplyRule(config.bcr.banker_rule)
       _game_obj.game.initFanPi(fanPi)
       _game_obj.game.initOdds(config.bcr.odds)
-      // _game_obj.game.start()
+      _game_obj.game.start()
     } catch (err) {
       console.log(`ERR ${err}`)
     }
   }
 
-  this.onChange = function (tbid, listener) {
+  this.onChange = function(tbid, listener) {
     this.gameList[tbid].game.onChange(betchange => listener(betchange))
   }
 
-  this.onComplete = function (tbid, listener) {
+  this.onComplete = function(tbid, listener) {
     this.gameList[tbid].game.onComplete(betresult => listener(betresult))
   }
 
-  this.onStatus = function (tbid, listener) {
+  this.onStatus = function(tbid, listener) {
     this.gameList[tbid].game.onStatus(status => listener(status))
   }
 
-  this.gameStart = function (tbid) {
+  this.gameStart = function(tbid) {
     this.gameList[tbid].game.start()
   }
 }

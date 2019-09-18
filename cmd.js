@@ -37,6 +37,8 @@ cmd.MSG_BT_PAYOUT_BALANCE = '00000121'
 
 cmd.MSG_USER_INFO = '00000130'
 
+cmd.MSG_TB_NTF = '00000140'
+
 
 if (typeof module !== 'undefined') {
   module.exports = cmd

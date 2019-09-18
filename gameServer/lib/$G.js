@@ -1,17 +1,136 @@
 const dbBet = require('./dbBet')
 const dbUser = require('./dbUser')
 const dbTable = require('./dbTable')
-const { calcBetTotal, calcUserPayout } = require('../utils')
+const { calcBetTotal, calcUserPayout, combineBet, minusBet} = require('../utils')
 const config = require('../config')
 const cmd = require('../../cmd')
 const $N = require('./$N')
+
+/**
+ * 統計桌上下注更新桌的彩池
+ * @param {*} tbid
+ * @param {*} pool
+ */
+
+var calcTbPool = function(tbid) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var _tbInfo = await dbTable.GET_TB_INFO(tbid)
+      var _bet = {
+        banker: 0,
+        player: 0,
+        bankerking: 0,
+        playerking: 0,
+        tie: 0,
+        tiepair: 0,
+        bpair: 0,
+        ppair: 0
+      }
+      await _tbInfo.users.map(async id => {
+        var _userBetinfo = await dbBet.GET_USER_BETINFO(id)
+        _bet = combineBet(_bet, _userBetinfo.bet)
+      })
+      await plusTbPool(tbid, _bet)
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+/**
+ * 增加彩池金額
+ * @param {*} tbid
+ * @param {*} bet
+ */
+
+var plusTbPool = function(tbid, bet) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var _tbInfo = await dbTable.GET_TB_INFO(tbid)
+      var _pool_combine = combineBet(_tbInfo.pool, bet)
+      await dbTable.UPDATE_TB_INFO(tbid, { pool: _pool_combine })
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+/**
+ * 減少彩池金額
+ * @param {*} tbid
+ * @param {*} bet
+ */
+
+var minusTbPool = function(tbid, bet) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var _tbInfo = await dbTable.GET_TB_INFO(tbid)
+      var _pool_combine = minusBet(_tbInfo.pool, bet)
+      await dbTable.UPDATE_TB_INFO(tbid, { pool: _pool_combine })
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+/**
+ * 更新桌的狀態
+ * @param {*} tbid
+ * @param {*} status
+ */
+
+var setTbStatus = function(tbid, status) {
+  return new Promise((resolve, reject) => {
+    dbTable
+      .UPDATE_TB_STATUS(tbid, status)
+      .then(resolve)
+      .catch(reject)
+  })
+}
+
+/**
+ * 通知此桌所有人訊息
+ * @param {*} tbid
+ * @param {*} ntf
+ */
+var tbNotify = function(tbid, ntf) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var _tbInfo = await dbTable.GET_TB_INFO(tbid)
+      _tbInfo.users.map(id => $N.notifyPeer(id, cmd.MSG_TB_NTF, ntf))
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+/**
+ * 針對一張桌進行派彩
+ * @param {*} tbid
+ * @param {*} betResult
+ */
+var tbPayout = function(tbid, betResult) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var _tbInfo = await dbTable.GET_TB_INFO(tbid)
+      await _tbInfo.users.map(async id => await peerPayout(id, betResult))
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
 
 /**
  * 計算某id的派彩結果
  * @param {*} id
  * @param {*} betResult
  */
-var peerPayout = async function(id, betResult) {
+var peerPayout = function(id, betResult) {
   return new Promise(async (resolve, reject) => {
     try {
       // 取betinfo
@@ -25,11 +144,9 @@ var peerPayout = async function(id, betResult) {
 
       // 判斷是否有下注
       if (calcBetTotal(_betInfo.bet) === 0) {
-
         // 空的betout
         await emptyBetout(id)
       } else {
-
         // 派彩囉
         await payout(id, betResult)
       }
@@ -71,6 +188,8 @@ var payout = function(id, betResult) {
         betResult.calc_result,
         config.bcr.odds
       )
+      await minusTbPool(_userInfo.tbid, _payout_bet)
+    
       _payout_total = calcBetTotal(_payout_bet)
       $N.notifyPeer(id, cmd.MSG_BT_PAYOUT, _payout_bet)
       _payout_userInfo = await dbUser.UPDATE_USER_INFO(id, {
@@ -124,4 +243,14 @@ var kickCheck = function(id) {
   })
 }
 
-module.exports = { peerPayout, kickCheck, kickout }
+module.exports = {
+  peerPayout,
+  kickCheck,
+  kickout,
+  setTbStatus,
+  tbPayout,
+  tbNotify,
+  calcTbPool,
+  plusTbPool,
+  minusTbPool
+}

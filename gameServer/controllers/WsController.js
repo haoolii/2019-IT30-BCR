@@ -12,7 +12,8 @@ var WsController = function() {
   this.initSocket = function(http) {
     io = require('socket.io')(http)
     io.use(auth)
-    ___socket(io)
+    // io
+    ___socket(mockio)
   }
 
   this.notifyAll = function(ntf, data) {
@@ -29,7 +30,6 @@ var WsController = function() {
   }
 
   this.notifyPeer = function(id, ntf, data) {
-    console.log(`id: ${id} ntf: ${ntf} data: ${data}`)
     if (usersSocket[id]) {
       usersSocket[id].emit(ntf, data)
     } else {
@@ -38,7 +38,8 @@ var WsController = function() {
   }
   // ___socket(mockio)
   var ___socket = function(_io) {
-    _io.on('connection', function(socket) {
+    console.log('?')
+    mockio.on('connection', function(socket) {
       console.log('YEAAAAAAAAAAAAAAAAAAAAAAA')
       socket.emit('SYS', 'YOU ARE CONNECTED!')
       var rqs = (reqkey, reskey, id, data) => {

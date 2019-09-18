@@ -13,11 +13,12 @@ var MainController = function() {
   GameController.onChange('1', c => {
     console.log(`c ${c}`)
   })
-  GameController.onComplete('1', r => {
-    $G.peerPayout('1', r)
+  GameController.onComplete('1', async r => {
+    await $G.calcTbPool('1')
+    await $G.tbPayout('1', r)
   })
-  GameController.onStatus('1', s => {
-    console.log('onstaus' + s)
+  GameController.onStatus('1', status => {
+    $G.tbNotify('1', status)
   })
   // GameController.gameStart('1')
 

@@ -13,10 +13,10 @@ var betOut = function(id, bet) {
     try {
       var _userInfo = await dbUser.GET_USER_INFO(id)
       var _tableInfo = await dbTable.GET_TB_INFO(_userInfo.tbid)
+      if (_tableInfo.status === 1) throw '不能下注'
       if (calcBetTotal(bet) > _userInfo.balance) throw '餘額不足'
-      if (_tableInfo.status === 1) throw '開牌中 不能下注'
       await dbBet.UPDATE_USER_BETOUT(id, bet)
-      await dbUser.UPDATE_USER_INFO(id, _userInfo.balance - calcBetTotal(bet))
+      await dbUser.UPDATE_USER_BALANCE(id, _userInfo.balance - calcBetTotal(bet))
       await dbBet.RESET_USER_KICKCOUNT(id)
       resolve(bet)
     } catch (err) {

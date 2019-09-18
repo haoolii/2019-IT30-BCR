@@ -1,10 +1,15 @@
-var getRandom = require('./getRandom')
-var shallowObject = require('./shallowObject')
-var calcBetTotal = require('./calcBetTotal')
-var calcUserPayout = require('./calcUserPayout')
+const getRandom = require('./getRandom')
+const shallowObject = require('./shallowObject')
+const calcBetTotal = require('./calcBetTotal')
+const calcUserPayout = require('./calcUserPayout')
+const combineBet = require('./combineBet')
+const minusBet = require('./minusBet')
+
 module.exports = {
-    getRandom,
-    shallowObject,
-    calcBetTotal,
-    calcUserPayout
+  getRandom,
+  shallowObject,
+  calcBetTotal,
+  calcUserPayout,
+  combineBet,
+  minusBet
 }

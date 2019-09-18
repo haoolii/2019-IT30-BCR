@@ -3,14 +3,14 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./db/users.json')
 const db = low(adapter)
 db.defaults({ users: [], total: 0 }).write()
-var dbUser = function () {
-  function _valid (res, err = 'USERINFO ERROR') {
+var dbUser = function() {
+  function _valid(res, err = 'USERINFO ERROR') {
     return new Promise((resolve, reject) => {
       res ? resolve(res) : reject(err)
     })
   }
 
-  function _CREATE (data) {
+  function _CREATE(data) {
     return _valid(
       db
         .get('users')
@@ -27,7 +27,7 @@ var dbUser = function () {
     })
   }
 
-  function _READ (data) {
+  function _READ(data) {
     return _valid(
       db
         .get('users')
@@ -36,7 +36,7 @@ var dbUser = function () {
     )
   }
 
-  function _UPDATE (id, data) {
+  function _UPDATE(id, data) {
     return _valid(
       db
         .get('users')
@@ -53,7 +53,7 @@ var dbUser = function () {
     })
   }
 
-  function _DELETE ({ id }) {
+  function _DELETE({ id }) {
     return _valid(
       db
         .get('users')
@@ -62,13 +62,16 @@ var dbUser = function () {
     )
   }
 
-  this.GET_USER_INFO = function (id) {
+  this.GET_USER_INFO = function(id) {
     return _READ({ id: id })
   }
 
-  this.UPDATE_USER_INFO = function (id, data) {
-    return _UPDATE(id + "", data)
+  this.UPDATE_USER_BALANCE = function(id, balance) {
+    return _UPDATE(id, { balance: balance })
   }
 
+  this.UPDATE_USER_INFO = function(id, data) {
+    return _UPDATE(id, data)
+  }
 }
 module.exports = new dbUser()

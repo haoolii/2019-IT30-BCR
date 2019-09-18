@@ -2,10 +2,10 @@
   "1": {
     "tbid": "1",
     "total": 0,
-    "status": 0,
+    "status": 1,
     "pool": {
       "banker": 0,
-      "player": 0,
+      "player": 300000,
       "bankerking": 0,
       "playerking": 0,
       "tie": 0,

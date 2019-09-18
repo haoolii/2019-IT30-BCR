@@ -3,7 +3,7 @@
     "id": 1,
     "online": false,
     "status": 1,
-    "kickcount": 3,
+    "kickcount": 0,
     "bet": {
       "banker": 0,
       "player": 0,
@@ -19,7 +19,7 @@
     "id": 2,
     "online": false,
     "status": 1,
-    "kickcount": 2,
+    "kickcount": 0,
     "bet": {
       "banker": 0,
       "player": 0,

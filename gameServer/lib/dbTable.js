@@ -76,6 +76,14 @@ var dbTable = function() {
       })
   }
 
+  this.UPDATE_TB_STATUS = function(tbid, status) {
+    return _UPDATE({ tbid: tbid, data: { status: status } })
+  }
+
+  this.UPDATE_TB_INFO = function(tbid, data) {
+    return _UPDATE({ tbid: tbid, data: data })
+  }
+
   this.USER_SITDOWN = function(tbid, id) {
     return _READ({ tbid: tbid })
       .then(tb => {

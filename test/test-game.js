@@ -4,7 +4,7 @@ const mockSocket = require('../gameServer/mock/mockSocket')
 const mockio = require('../gameServer/mock/mockio')
 const userMock = require('./userMock')
 
-// WsController.initSocket()
+Ws.initSocket()
 
 var userFake = function (id) {
   let userm = new userMock(id)
@@ -15,7 +15,7 @@ var userFake = function (id) {
   // userm.getTBInfo()
   // userm.getBetInfo()
   // userm.tbsit()
-  // userm.betout()
+  userm.betout()
   // userm.logout()
   // userm.disconnect()
 }
