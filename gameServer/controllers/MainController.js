@@ -11,21 +11,30 @@ var MainController = function() {
   this.ws = null
 
   this.initGames = async function(__tbid) {
-    if (this.games[__tbid]) return
-    var anyUserInTb = await $G.ensureUserInTb(__tbid)
-    if (anyUserInTb) {
-      this.games[__tbid] = GameController
-      GameController.buildGame(__tbid)
-      GameController.onChange(__tbid, c => console.log(`剩餘: ${c} ms`))
-      GameController.onStatus(__tbid, status => $G.tbNotify(__tbid, status))
-      GameController.onComplete(__tbid, async r => {
-        await $G.calcTbPool(__tbid)
-        await $G.tbPayout(__tbid, r)
-        this.games[__tbid] = null
-        setTimeout(() => this.initGames(__tbid), 2000)
-      })
-      GameController.gameStart(__tbid)
-      delete this.games.__tbid
+    try {
+      if (this.games[__tbid]) return
+      var anyUserInTb = await $G.ensureUserInTb(__tbid)
+      if (anyUserInTb) {
+        this.games[__tbid] = GameController
+        GameController.buildGame(__tbid)
+        GameController.onChange(__tbid, c => $G.tbNotify(__tbid, c))
+        GameController.onStatus(__tbid, status => $G.tbNotify(__tbid, status))
+        GameController.onComplete(__tbid, async r => {
+          try {
+            await $G.calcTbPool(__tbid)
+            await $G.tbPayout(__tbid, r)
+            this.games[__tbid] = null
+            setTimeout(() => this.initGames(__tbid), 2000)
+          } catch (err) {
+            console.log('error initGames')
+            throw err
+          }
+        })
+        GameController.gameStart(__tbid)
+        delete this.games.__tbid
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -35,8 +44,6 @@ var MainController = function() {
     })
   }
 
-  this.initTb('1')
-
   this.initWs = function(_ws) {
     this.ws = _ws
     $N.initNTF(this.ws)
@@ -45,12 +52,12 @@ var MainController = function() {
   this.onWs = function(reqkey, id, data) {
     return new Promise((resolve, reject) => {
       const _R = p => p.then(resolve).catch(reject)
-
       switch (reqkey) {
         case cmd.REQ_USER_TB_SITDOWN:
           _R($R.sitDown(data.tbid, id))
           break
         case cmd.REQ_USER_LOGIN:
+          _R($R.login(id))
           break
         case cmd.REQ_USER_BETOUT:
           _R($R.betOut(id, data.bet))
@@ -64,8 +71,11 @@ var MainController = function() {
         case cmd.REQ_USER_INFO:
           _R($R.userInfo(id))
           break
+        case cmd.REQ_USER_LOGOUT:
+          _R($R.logout(id))
       }
     })
   }
+  this.initTb('1')
 }
 module.exports = new MainController()

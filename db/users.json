@@ -2,15 +2,17 @@
   "users": [
     {
       "id": "1",
+      "online": true,
       "tbid": "1",
       "email": "unnhao@gmail.com",
-      "balance": 56100
+      "balance": 9879999
     },
     {
       "id": "2",
+      "online": false,
       "tbid": null,
       "email": "sunnhao@gmail.com",
-      "balance": 8580000
+      "balance": 8430000
     }
   ],
   "total": 1

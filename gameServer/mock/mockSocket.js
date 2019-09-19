@@ -1,5 +1,5 @@
 var mockSocket = function(id) {
-  this.id = id
+  this._id = id
   var _cbs = {}
 
   this.on = function(event, listener) {

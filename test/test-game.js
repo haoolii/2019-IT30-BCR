@@ -4,30 +4,28 @@ const mockSocket = require('../gameServer/mock/mockSocket')
 const mockio = require('../gameServer/mock/mockio')
 const userMock = require('./userMock')
 
-Ws.initSocket()
-
+Ws.initSocket(this.initSocket)
 var userFake = function(id) {
   let userm = new userMock(id)
   userm.connect()
-  // userm.login()
+  userm.login()
   userm.tbsit()
   // userm.getUserInfo()
   // userm.getTBInfo()
   // userm.getBetInfo()
   // userm.tbsit()
+  setTimeout(() => {
   userm.betout()
+  }, 1000)
   // userm.logout()
-  // userm.disconnect()
+  setTimeout(() => {
+    userm.disconnect()
+  }, 5000)
 
   setTimeout(() => {
-    userm.tbsit()
-    setTimeout(() => {
-      userm.betout()
-    }, 1000)
-  }, 16000)
+    userm.connect()
+    userm.login()
+    console.log('LOGIN')
+  }, 12000);
 }
-
 userFake('1')
-setTimeout(() => {
-  userFake('2')
-}, 2000)

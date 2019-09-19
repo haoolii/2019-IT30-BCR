@@ -17,6 +17,7 @@ var initNTF = function (ws) {
  * @param {*} err
  */
 var notifyPeerError = function (id, err) {
+  console.log('notifyPeerError ' + id)
   if (!_ws) throw 'WS NTF ERROR!'
   _ws.notifyPeerError(id, err)
 }

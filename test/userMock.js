@@ -86,7 +86,7 @@ var userMock = function(id) {
   })
 
   this.login = function() {
-    this.socket.emit(cmd.REQ_USER_LOGIN, { tbid: '1' })
+    this.socket.emit(cmd.REQ_USER_LOGIN)
     _req_wait(cmd.RES_USER_LOGIN).then(res => {
       console.log('U hay: ' + res)
     })

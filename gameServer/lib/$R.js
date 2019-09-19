@@ -38,7 +38,7 @@ var sitDown = function(tbid, id) {
     try {
       await dbTable.USER_SITDOWN(tbid, id)
       await dbUser.UPDATE_USER_INFO(id, { tbid: tbid })
-      $G.emitUserJoin(tbid)
+      await $G.emitUserJoin(tbid)
       resolve({ tbid: tbid })
     } catch (err) {
       reject(err)
@@ -89,4 +89,29 @@ var tbInfo = function(id) {
     })
   })
 }
-module.exports = { betOut, sitDown, betInfo, tbInfo, userInfo }
+/**
+ * 會員登入 (其實只有顯示online or offline)
+ * @param {*} id
+ */
+var login = function(id) {
+  return new Promise((resolve, reject) => {
+    dbUser
+      .UPDATE_USER_INFO(id, { online: true })
+      .then(resolve)
+      .catch(reject)
+  })
+}
+
+/**
+ * 會員登出 (其實只有顯示online or offline)
+ * @param {*} id
+ */
+var logout = function(id) {
+  return new Promise((resolve, reject) => {
+    dbUser
+      .UPDATE_USER_INFO(id, { online: false })
+      .then(resolve)
+      .catch(reject)
+  })
+}
+module.exports = { betOut, sitDown, betInfo, tbInfo, userInfo, login, logout}

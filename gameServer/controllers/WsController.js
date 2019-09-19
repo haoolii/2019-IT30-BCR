@@ -11,9 +11,9 @@ var WsController = function() {
 
   this.initSocket = function(http) {
     io = require('socket.io')(http)
-    io.use(auth)
+    // io.use(auth)
     // io
-    ___socket(io)
+    ___socket(mockio)
   }
 
   this.notifyAll = function(ntf, data) {
@@ -24,7 +24,7 @@ var WsController = function() {
     if (usersSocket[id]) {
       usersSocket[id].emit('99999999', { error: err })
     } else {
-      console.log('NOT CONNECTED')
+      console.log(`id :${id} notifyPeerError NOT CONNECTED`)
     }
   }
 
@@ -32,13 +32,15 @@ var WsController = function() {
     if (usersSocket[id]) {
       usersSocket[id].emit(ntf, data)
     } else {
-      console.log('NOT CONNECTED')
+      console.log(`id :${id} notifyPeer  NOT CONNECTED`)
     }
   }
   var ___socket = function(_io) {
     _io.on('connection', function(socket) {
+
       socket.emit('connect')
-      var rqs = (reqkey, reskey, id, data) => {
+
+      const __rqs = (reqkey, reskey, id, data) => {
         MainController.onWs(reqkey, id, data)
           .then(res => socket.emit(reskey, { result: res }))
           .catch(err => socket.emit(reskey, { error: err }))
@@ -46,33 +48,33 @@ var WsController = function() {
       usersSocket[socket._id] = socket
 
       socket.on(cmd.REQ_USER_TB_SITDOWN, data => {
-        rqs(cmd.REQ_USER_TB_SITDOWN, cmd.RES_USER_TB_SITDOWN, socket._id, data)
+        __rqs(cmd.REQ_USER_TB_SITDOWN, cmd.RES_USER_TB_SITDOWN, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_LOGIN, data => {
-        rqs(cmd.REQ_USER_LOGIN, cmd.RES_USER_LOGIN, socket._id, data)
+        __rqs(cmd.REQ_USER_LOGIN, cmd.RES_USER_LOGIN, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_INFO, data => {
-        rqs(cmd.REQ_USER_INFO, cmd.RES_USER_INFO, socket._id, data)
+        __rqs(cmd.REQ_USER_INFO, cmd.RES_USER_INFO, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_BET_INFO, data => {
-        rqs(cmd.REQ_USER_BET_INFO, cmd.RES_USER_BET_INFO, socket._id, data)
+        __rqs(cmd.REQ_USER_BET_INFO, cmd.RES_USER_BET_INFO, socket._id, data)
       })
 
       socket.on(cmd.REQ_TB_INFO, data => {
-        rqs(cmd.REQ_TB_INFO, cmd.RES_TB_INFO, socket._id, data)
+        __rqs(cmd.REQ_TB_INFO, cmd.RES_TB_INFO, socket._id, data)
       })
 
       socket.on(cmd.REQ_USER_BETOUT, data => {
-        rqs(cmd.REQ_USER_BETOUT, cmd.RES_USER_BETOUT, socket._id, data)
+        __rqs(cmd.REQ_USER_BETOUT, cmd.RES_USER_BETOUT, socket._id, data)
       })
 
       socket.on('disconnect', socket => {
-        usersSocket[socket.id] = null
-        delete usersSocket[socket.id]
-        console.log('user disconnect')
+        __rqs(cmd.REQ_USER_LOGOUT, cmd.RES_USER_LOGOUT, socket._id)
+        usersSocket[socket._id] = null
+        delete usersSocket[socket._id]
       })
     })
   }
