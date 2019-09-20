@@ -3,24 +3,24 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('./db/bets.json')
 const db = low(adapter)
 
-var dbBet = function () {
-  function _valid (res, err = 'BETINFO ERROR') {
+var dbBet = function() {
+  function _valid(res, err = 'BETINFO ERROR') {
     return new Promise((resolve, reject) => {
       res ? resolve(res) : reject(err)
     })
   }
 
-  function _CREATE (id, data) {
+  function _CREATE(id, data) {
     return _valid(db.set(id, data).write()).then(() => {
       return _valid(db.get(id).value())
     })
   }
 
-  function _READ (id) {
+  function _READ(id) {
     return _valid(db.get(id).value())
   }
 
-  function _UPDATE (id, data) {
+  function _UPDATE(id, data) {
     return _valid(db.get(id).value()).then(r => {
       return _valid(
         db
@@ -31,7 +31,7 @@ var dbBet = function () {
     })
   }
 
-  function _UPDATE_BETINFO (id, data) {
+  function _UPDATE_BETINFO(id, data) {
     return _valid(db.get(id).value()).then(r => {
       return _valid(
         db
@@ -43,23 +43,23 @@ var dbBet = function () {
     })
   }
 
-  function _DELETE (id) {
+  function _DELETE(id) {
     return _valid(db.unset(id).write())
   }
 
-  this.REMOVE_USER_BETINFO = function (id) {
+  this.REMOVE_USER_BETINFO = function(id) {
     return _DELETE(id)
   }
 
-  this.UPDATE_USER_BETINFO = function (id, betinfo) {
+  this.UPDATE_USER_BETINFO = function(id, betinfo) {
     return _UPDATE_BETINFO(id, betinfo)
   }
 
-  this.GET_USER_BETINFO = function (id) {
+  this.GET_USER_BETINFO = function(id) {
     return _READ(id)
   }
 
-  this.RESET_USER_BETOUT = function (id) {
+  this.RESET_USER_BETOUT = function(id) {
     return _READ(id).then(data => {
       data.bet['banker'] = 0
       data.bet['player'] = 0
@@ -73,7 +73,7 @@ var dbBet = function () {
     })
   }
 
-  this.UPDATE_USER_BETOUT = function (id, betinfo) {
+  this.UPDATE_USER_BETOUT = function(id, betinfo) {
     return _READ(id).then(data => {
       data.bet['banker'] += betinfo['banker']
       data.bet['player'] += betinfo['player']
@@ -87,23 +87,32 @@ var dbBet = function () {
     })
   }
 
-  this.CREATE_USER_BETINFO = function (id, betinfo) {
+  this.CREATE_USER_BETINFO = function(id) {
     return _CREATE(id, {
       id: id,
       online: false,
       status: 0,
-      bet: betinfo
+      bet: {
+        banker: 0,
+        player: 0,
+        bankerking: 0,
+        playerking: 0,
+        tie: 0,
+        tiepair: 0,
+        bpair: 0,
+        ppair: 0
+      }
     })
   }
 
-  this.INCREASE_USER_KICKCOUNT = function (id) {
+  this.INCREASE_USER_KICKCOUNT = function(id) {
     return _READ(id).then(data => {
       data.kickcount = data.kickcount + 1
       return _UPDATE(id, { kickcount: data.kickcount })
     })
   }
 
-  this.RESET_USER_KICKCOUNT = function (id) {
+  this.RESET_USER_KICKCOUNT = function(id) {
     return _READ(id).then(data => {
       return _UPDATE(id, { kickcount: 0 })
     })

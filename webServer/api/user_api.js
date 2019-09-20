@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const fs = require('fs')
 const userController = require('../src/userController')
+const betController = require('../src/betController')
 const mailController = require('../src/mailController')
 const { validateEmail } = require('../src/utils')
 const jwt = require('jsonwebtoken')
@@ -46,6 +47,9 @@ router.post('/register', (req, res) => {
   }
   userController
     .ADD_USER(req.body.email)
+    .then(user => {
+      return betController.CREATE_USER_BETINFO(user.id).then(() => user)
+    })
     .then(user => {
       return mailController.SEND_USER_PASSWORD(user.email, user.password)
     })
