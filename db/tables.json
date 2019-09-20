@@ -4,9 +4,9 @@
     "total": 0,
     "status": 1,
     "pool": {
-      "banker": -7766,
-      "player": 1098666,
-      "bankerking": 618000,
+      "banker": 0,
+      "player": 0,
+      "bankerking": 0,
       "playerking": 0,
       "tie": 0,
       "tiepair": 0,
@@ -17,8 +17,6 @@
       "userCount": 0
     },
     "history": [],
-    "users": [
-      "1"
-    ]
+    "users": []
   }
 }

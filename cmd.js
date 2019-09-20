@@ -24,20 +24,10 @@ cmd.RES_USER_TB_SITDOWN = '00000011'
   NTF 100
 =================================================*/
 cmd.MSG_ERROR_NTF = '99999999'
-cmd.MSG_TB_STR_JOIN = '00000100'
-cmd.MSG_TB_STR_BETOUT = '00000101'
-cmd.MSG_TB_STR_QUIT = '00000102'
-cmd.MSG_TB_KICKOUT = '00000103'
+cmd.MSG_TB_NTF = '00000100'
+cmd.MSG_BT_NTF = '00000110'
+cmd.MSG_USER_NTF = '00000120'
 
-cmd.MSG_TB_FANPI = '00000110'
-cmd.MSG_TB_COUNTTIME = '00000111'
-
-cmd.MSG_BT_PAYOUT = '00000120'
-cmd.MSG_BT_PAYOUT_BALANCE = '00000121'
-
-cmd.MSG_USER_INFO = '00000130'
-
-cmd.MSG_TB_NTF = '00000140'
 
 
 if (typeof module !== 'undefined') {

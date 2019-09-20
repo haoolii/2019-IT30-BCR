@@ -2,7 +2,37 @@
   "1": {
     "id": 1,
     "status": 1,
-    "kickcount": 2,
+    "kickcount": 0,
+    "bet": {
+      "banker": 0,
+      "player": 0,
+      "bankerking": 0,
+      "playerking": 0,
+      "tie": 0,
+      "tiepair": 0,
+      "bpair": 0,
+      "ppair": 0
+    }
+  },
+  "2": {
+    "id": 2,
+    "status": 0,
+    "kickcount": 0,
+    "bet": {
+      "banker": 0,
+      "player": 0,
+      "bankerking": 0,
+      "playerking": 0,
+      "tie": 0,
+      "tiepair": 0,
+      "bpair": 0,
+      "ppair": 0
+    }
+  },
+  "3": {
+    "id": 3,
+    "status": 0,
+    "kickcount": 0,
     "bet": {
       "banker": 0,
       "player": 0,

@@ -16,10 +16,6 @@ var WsController = function() {
     ___socket(mockio)
   }
 
-  this.notifyAll = function(ntf, data) {
-    console.log(Object.keys(usersSocket))
-  }
-
   this.notifyPeerError = function(id, err) {
     if (usersSocket[id]) {
       usersSocket[id].emit('99999999', { error: err })
@@ -28,16 +24,15 @@ var WsController = function() {
     }
   }
 
-  this.notifyPeer = function(id, ntf, data) {
+  this.notifyPeer = function(id, ntf, cst, data) {
     if (usersSocket[id]) {
-      usersSocket[id].emit(ntf, data)
+      usersSocket[id].emit(ntf, cst, data)
     } else {
       console.log(`id :${id} notifyPeer  NOT CONNECTED`)
     }
   }
   var ___socket = function(_io) {
     _io.on('connection', function(socket) {
-
       socket.emit('connect')
 
       const __rqs = (reqkey, reskey, id, data) => {
@@ -48,7 +43,12 @@ var WsController = function() {
       usersSocket[socket._id] = socket
 
       socket.on(cmd.REQ_USER_TB_SITDOWN, data => {
-        __rqs(cmd.REQ_USER_TB_SITDOWN, cmd.RES_USER_TB_SITDOWN, socket._id, data)
+        __rqs(
+          cmd.REQ_USER_TB_SITDOWN,
+          cmd.RES_USER_TB_SITDOWN,
+          socket._id,
+          data
+        )
       })
 
       socket.on(cmd.REQ_USER_LOGIN, data => {

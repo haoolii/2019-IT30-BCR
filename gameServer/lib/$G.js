@@ -9,6 +9,7 @@ const {
 } = require('../utils')
 const config = require('../config')
 const cmd = require('../../cmd')
+const cst = require('../../cst')
 const $N = require('./$N')
 
 const __userjoinCbs = {}
@@ -103,11 +104,11 @@ var setTbStatus = function(tbid, status) {
  * @param {*} tbid
  * @param {*} ntf
  */
-var tbNotify = function(tbid, ntf) {
+var tbNotify = function(tbid, cst, data) {
   return new Promise(async (resolve, reject) => {
     try {
       var _tbInfo = await dbTable.GET_TB_INFO(tbid)
-      _tbInfo.users.map(id => $N.notifyPeer(id, cmd.MSG_TB_NTF, ntf))
+      _tbInfo.users.map(id => $N.notifyPeer(id, cmd.MSG_TB_NTF, cst, data))
       resolve()
     } catch (err) {
       reject(err)
@@ -144,7 +145,7 @@ var peerPayout = function(id, betResult) {
       var _betInfo = await dbBet.GET_USER_BETINFO(id)
 
       // 通知牌局結果
-      $N.notifyPeer(id, cmd.MSG_TB_FANPI, betResult)
+      $N.notifyPeer(id, cmd.MSG_TB_NTF, cst.TB_NTF_FANPI, betResult)
 
       // 檢查是否要踢掉
       if (!(await kickCheck(id))) return
@@ -198,12 +199,12 @@ var payout = function(id, betResult) {
       await minusTbPool(_userInfo.tbid, _payout_bet)
 
       _payout_total = calcBetTotal(_payout_bet)
-      $N.notifyPeer(id, cmd.MSG_BT_PAYOUT, _payout_bet)
+      $N.notifyPeer(id, cmd.MSG_BT_NTF, cst.BT_NTF_PAYOUT, _payout_bet)
       _payout_userInfo = await dbUser.UPDATE_USER_INFO(id, {
         balance: _userInfo.balance + _payout_total
       })
       await dbBet.RESET_USER_BETOUT(id)
-      $N.notifyPeer(id, cmd.MSG_USER_INFO, _payout_userInfo)
+      $N.notifyPeer(id, cmd.MSG_USER_NTF, null, _payout_userInfo)
       resolve()
     } catch (err) {
       reject(err)
@@ -219,7 +220,7 @@ var kickout = function(tbid, id) {
   return new Promise(async (resolve, reject) => {
     try {
       var _userInfo = await dbUser.UPDATE_USER_INFO(id, { tbid: null })
-      $N.notifyPeer(id, cmd.MSG_TB_KICKOUT, { tbid: tbid })
+      $N.notifyPeer(id, cmd.MSG_TB_NTF, cst.TB_NTF_KICKOUT, { tbid: tbid })
       await dbTable.KICK_OUT_USER(tbid, id)
       await dbBet.RESET_USER_KICKCOUNT(id)
       resolve()

@@ -24,7 +24,6 @@ function _SEND_EMAIL(_opt) {
 }
 
 function SEND_USER_PASSWORD(mail, password) {
-  console.log(`function SEND_USER_PASSWORD(${mail}, ${password}) {`)
   return _SEND_EMAIL({
     from: process.env.EMAIL_USER,
     to: mail,

@@ -42,36 +42,22 @@ var userMock = function(id) {
     console.log('SYS: ' + res)
   })
 
-  this.socket.on(cmd.MSG_TB_FANPI, res => {
-    console.log(res)
+  this.socket.on(cmd.MSG_BT_NTF, function() {
+    var args = [].slice.call(arguments, 0)
+    // console.log('MSG_BT_NTF' + args.length)
+    // console.log(arguments)
   })
 
-  this.socket.on(cmd.MSG_BT_PAYOUT, res => {
-    console.log(res)
+  this.socket.on(cmd.MSG_TB_NTF, function() {
+    var args = [].slice.call(arguments, 0)
+    console.log('MSG_TB_NTF' + args.length)
+    console.log(arguments)
   })
 
-  this.socket.on(cmd.MSG_BT_PAYOUT, res => {
-    console.log(res)
-  })
-
-  this.socket.on(cmd.MSG_TB_NTF, res => {
-    console.log('MSG_TB_NTF: ' + JSON.stringify(res))
-  })
-
-  this.socket.on(cmd.MSG_USER_INFO, res => {
-    console.log('U MSG_USER_INFO')
-    console.log(res)
-  })
-  this.socket.on(cmd.MSG_TB_COUNTTIME, time => {
-    console.log('U 剩下= ' + time)
-  })
-
-  this.socket.on(cmd.MSG_TB_KICKOUT, res => {
-    console.log('U 三局沒下注，被踢出了')
-  })
-
-  this.socket.on(cmd.MSG_ERROR_NTF, err => {
-    console.log(`U 收到ERROR ${JSON.stringify(err)}`)
+  this.socket.on(cmd.MSG_USER_NTF, function() {
+    var args = [].slice.call(arguments, 0)
+    // console.log('MSG_USER_NTF' + args.length)
+    // console.log(arguments)
   })
 
   this.connect = function() {

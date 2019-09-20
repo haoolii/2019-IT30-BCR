@@ -5,9 +5,9 @@ var _ws = null
 
 /**
  * 初始化ws
- * @param {*} ws 
+ * @param {*} ws
  */
-var initNTF = function (ws) {
+var initNTF = function(ws) {
   _ws = ws
 }
 
@@ -16,7 +16,7 @@ var initNTF = function (ws) {
  * @param {*} id
  * @param {*} err
  */
-var notifyPeerError = function (id, err) {
+var notifyPeerError = function(id, err) {
   console.log('notifyPeerError ' + id)
   if (!_ws) throw 'WS NTF ERROR!'
   _ws.notifyPeerError(id, err)
@@ -28,9 +28,9 @@ var notifyPeerError = function (id, err) {
  * @param {*} ntf
  * @param {*} data
  */
-var notifyPeer = function (id, ntf, data) {
+var notifyPeer = function(id, ntf, cst, data) {
   if (!_ws) throw 'WS NTF ERROR!'
-  _ws.notifyPeer(id, ntf, data)
+  _ws.notifyPeer(id, ntf, cst, data)
 }
 
-module.exports = { initNTF ,notifyPeer, notifyPeerError}
+module.exports = { initNTF, notifyPeer, notifyPeerError }

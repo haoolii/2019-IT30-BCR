@@ -17,8 +17,9 @@ var MainController = function() {
       if (anyUserInTb) {
         this.games[__tbid] = GameController
         GameController.buildGame(__tbid)
-        GameController.onChange(__tbid, c => $G.tbNotify(__tbid, c))
-        GameController.onStatus(__tbid, status => $G.tbNotify(__tbid, status))
+        GameController.onStatus(__tbid, (status, data) =>
+          $G.tbNotify(__tbid, status, data)
+        )
         GameController.onComplete(__tbid, async r => {
           try {
             await $G.calcTbPool(__tbid)

@@ -18,14 +18,14 @@ var userFake = function(id) {
   userm.betout()
   }, 1000)
   // userm.logout()
-  setTimeout(() => {
-    userm.disconnect()
-  }, 5000)
+  // setTimeout(() => {
+  //   userm.disconnect()
+  // }, 5000)
 
-  setTimeout(() => {
-    userm.connect()
-    userm.login()
-    console.log('LOGIN')
-  }, 12000);
+  // setTimeout(() => {
+  //   userm.connect()
+  //   userm.login()
+  //   console.log('LOGIN')
+  // }, 12000);
 }
 userFake('1')

@@ -1,6 +1,7 @@
 const { Game } = require('../core')
 const config = require('../config')
 const cmd = require('../../cmd')
+const cst = require('../../cst')
 const { preparePoker, fanPi, timeClock } = require('../core')
 const { $G } = require('../lib')
 
@@ -43,16 +44,14 @@ var GameController = function() {
     }
   }
 
-  this.onChange = function(tbid, listener) {
-    this.gameList[tbid].game.onChange(betchange => listener(betchange))
-  }
-
   this.onComplete = function(tbid, listener) {
-    this.gameList[tbid].game.onComplete(betresult => listener(betresult))
+    this.gameList[tbid].game.onComplete(betresult =>
+      listener(betresult)
+    )
   }
 
   this.onStatus = function(tbid, listener) {
-    this.gameList[tbid].game.onStatus(status => listener(status))
+    this.gameList[tbid].game.onStatus(listener)
   }
 
   this.gameStart = function(tbid) {
