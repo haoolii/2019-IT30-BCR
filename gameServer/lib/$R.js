@@ -8,7 +8,7 @@ const $G = require('./$G')
  * @param {*} id
  * @param {*} bet
  */
-var betOut = function(id, bet) {
+var betOut = function (id, bet) {
   return new Promise(async (resolve, reject) => {
     try {
       var _userInfo = await dbUser.GET_USER_INFO(id)
@@ -33,7 +33,7 @@ var betOut = function(id, bet) {
  * @param {*} tbid
  * @param {*} id
  */
-var sitDown = function(tbid, id) {
+var sitDown = function (tbid, id) {
   return new Promise(async (resolve, reject) => {
     try {
       await dbTable.USER_SITDOWN(tbid, id)
@@ -50,7 +50,7 @@ var sitDown = function(tbid, id) {
  * 取得bet資料
  * @param {*} id
  */
-var betInfo = function(id) {
+var betInfo = function (id) {
   return new Promise((resolve, reject) => {
     dbBet
       .GET_USER_BETINFO(id)
@@ -63,7 +63,7 @@ var betInfo = function(id) {
  * 取得user資料
  * @param {*} id
  */
-var userInfo = function(id) {
+var userInfo = function (id) {
   return new Promise((resolve, reject) => {
     dbUser
       .GET_USER_INFO(id)
@@ -79,7 +79,7 @@ var userInfo = function(id) {
  * 取得使用者所在桌的資料
  * @param {*} id
  */
-var tbInfo = function(id) {
+var tbInfo = function (id) {
   return new Promise((resolve, reject) => {
     dbUser.GET_USER_INFO(id).then(userInfo => {
       dbTable
@@ -93,8 +93,10 @@ var tbInfo = function(id) {
  * 會員登入 (其實只有顯示online or offline)
  * @param {*} id
  */
-var login = function(id) {
+var login = function (id) {
   return new Promise((resolve, reject) => {
+    console.log(id)
+    console.log('login')
     dbUser
       .UPDATE_USER_INFO(id, { online: true })
       .then(resolve)
@@ -106,7 +108,7 @@ var login = function(id) {
  * 會員登出 (其實只有顯示online or offline)
  * @param {*} id
  */
-var logout = function(id) {
+var logout = function (id) {
   return new Promise((resolve, reject) => {
     dbUser
       .UPDATE_USER_INFO(id, { online: false })
@@ -114,4 +116,4 @@ var logout = function(id) {
       .catch(reject)
   })
 }
-module.exports = { betOut, sitDown, betInfo, tbInfo, userInfo, login, logout}
+module.exports = { betOut, sitDown, betInfo, tbInfo, userInfo, login, logout }

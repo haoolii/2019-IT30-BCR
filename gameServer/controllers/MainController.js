@@ -3,14 +3,14 @@ const cmd = require('../../cmd')
 const GameController = require('./GameController')
 const { $R, $G, $N } = require('../lib')
 
-var MainController = function() {
+var MainController = function () {
   this.game = new Game()
   this.poker = null
   this.pokerList = []
   this.games = {}
   this.ws = null
 
-  this.initGames = async function(__tbid) {
+  this.initGames = async function (__tbid) {
     try {
       if (this.games[__tbid]) return
       var anyUserInTb = await $G.ensureUserInTb(__tbid)
@@ -39,18 +39,18 @@ var MainController = function() {
     }
   }
 
-  this.initTb = function(__tbid) {
+  this.initTb = function (__tbid) {
     $G.onUserJoin(__tbid, () => {
       this.initGames(__tbid)
     })
   }
 
-  this.initWs = function(_ws) {
+  this.initWs = function (_ws) {
     this.ws = _ws
     $N.initNTF(this.ws)
   }
 
-  this.onWs = function(reqkey, id, data) {
+  this.onWs = function (reqkey, id, data) {
     return new Promise((resolve, reject) => {
       const _R = p => p.then(resolve).catch(reject)
       switch (reqkey) {

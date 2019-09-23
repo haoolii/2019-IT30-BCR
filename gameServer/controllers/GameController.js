@@ -5,10 +5,10 @@ const cst = require('../../cst')
 const { preparePoker, fanPi, timeClock } = require('../core')
 const { $G } = require('../lib')
 
-var GameController = function() {
+var GameController = function () {
   this.gameList = {}
 
-  this.buildGame = async function(tbid) {
+  this.buildGame = async function (tbid) {
     var _game_obj = {
       tbid: tbid,
       poker: null,
@@ -21,7 +21,7 @@ var GameController = function() {
     this.gameList[tbid] = _game_obj
     gameInit(_game_obj)
   }
-  var gameInit = function(_game_obj) {
+  var gameInit = function (_game_obj) {
     try {
       _game_obj.poker = config.poker
       _game_obj.pokerList = preparePoker(
@@ -38,28 +38,28 @@ var GameController = function() {
       _game_obj.game.initBankererSupplyRule(config.bcr.banker_rule)
       _game_obj.game.initFanPi(fanPi)
       _game_obj.game.initOdds(config.bcr.odds)
-      // _game_obj.game.start()
+      _game_obj.game.start()
     } catch (err) {
       console.log(`ERR ${err}`)
     }
   }
 
-  this.onComplete = function(tbid, listener) {
+  this.onComplete = function (tbid, listener) {
     this.gameList[tbid].game.onComplete(betresult =>
       listener(betresult)
     )
   }
 
-  this.onStatus = function(tbid, listener) {
+  this.onStatus = function (tbid, listener) {
     this.gameList[tbid].game.onStatus(listener)
   }
 
-  this.gameStart = function(tbid) {
+  this.gameStart = function (tbid) {
     this.gameList[tbid].game.start()
     this.gameBetStatus(tbid, 0)
   }
 
-  this.gameBetStatus = async function(tbid, status) {
+  this.gameBetStatus = async function (tbid, status) {
     try {
       await $G.setTbStatus(tbid, status)
     } catch (err) {

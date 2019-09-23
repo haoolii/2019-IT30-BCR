@@ -3,20 +3,20 @@ const cmd = require('../../cmd')
 const MainController = require('./MainController')
 const auth = require('../middleware/auth')
 
-var WsController = function() {
+var WsController = function () {
   var io = null
   var usersSocket = {}
 
   MainController.initWs(this)
 
-  this.initSocket = function(http) {
+  this.initSocket = function (http) {
     io = require('socket.io')(http)
-    // io.use(auth)
+    io.use(auth)
     // io
-    ___socket(mockio)
+    ___socket(io)
   }
 
-  this.notifyPeerError = function(id, err) {
+  this.notifyPeerError = function (id, err) {
     if (usersSocket[id]) {
       usersSocket[id].emit('99999999', { error: err })
     } else {
@@ -24,15 +24,15 @@ var WsController = function() {
     }
   }
 
-  this.notifyPeer = function(id, ntf, cst, data) {
+  this.notifyPeer = function (id, ntf, cst, data) {
     if (usersSocket[id]) {
       usersSocket[id].emit(ntf, cst, data)
     } else {
       console.log(`id :${id} notifyPeer  NOT CONNECTED`)
     }
   }
-  var ___socket = function(_io) {
-    _io.on('connection', function(socket) {
+  var ___socket = function (_io) {
+    _io.on('connection', function (socket) {
       socket.emit('connect')
 
       const __rqs = (reqkey, reskey, id, data) => {
@@ -71,7 +71,7 @@ var WsController = function() {
         __rqs(cmd.REQ_USER_BETOUT, cmd.RES_USER_BETOUT, socket._id, data)
       })
 
-      socket.on('disconnect', socket => {
+      socket.on('disconnect', _socket => {
         __rqs(cmd.REQ_USER_LOGOUT, cmd.RES_USER_LOGOUT, socket._id)
         usersSocket[socket._id] = null
         delete usersSocket[socket._id]

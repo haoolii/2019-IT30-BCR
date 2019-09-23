@@ -20,7 +20,7 @@ const __userjoinCbs = {}
  * @param {*} pool
  */
 
-var calcTbPool = function(tbid) {
+var calcTbPool = function (tbid) {
   return new Promise(async (resolve, reject) => {
     try {
       var _tbInfo = await dbTable.GET_TB_INFO(tbid)
@@ -52,7 +52,7 @@ var calcTbPool = function(tbid) {
  * @param {*} bet
  */
 
-var plusTbPool = function(tbid, bet) {
+var plusTbPool = function (tbid, bet) {
   return new Promise(async (resolve, reject) => {
     try {
       var _tbInfo = await dbTable.GET_TB_INFO(tbid)
@@ -71,7 +71,7 @@ var plusTbPool = function(tbid, bet) {
  * @param {*} bet
  */
 
-var minusTbPool = function(tbid, bet) {
+var minusTbPool = function (tbid, bet) {
   return new Promise(async (resolve, reject) => {
     try {
       var _tbInfo = await dbTable.GET_TB_INFO(tbid)
@@ -90,7 +90,7 @@ var minusTbPool = function(tbid, bet) {
  * @param {*} status
  */
 
-var setTbStatus = function(tbid, status) {
+var setTbStatus = function (tbid, status) {
   return new Promise((resolve, reject) => {
     dbTable
       .UPDATE_TB_STATUS(tbid, status)
@@ -104,7 +104,7 @@ var setTbStatus = function(tbid, status) {
  * @param {*} tbid
  * @param {*} ntf
  */
-var tbNotify = function(tbid, cst, data) {
+var tbNotify = function (tbid, cst, data) {
   return new Promise(async (resolve, reject) => {
     try {
       var _tbInfo = await dbTable.GET_TB_INFO(tbid)
@@ -121,7 +121,7 @@ var tbNotify = function(tbid, cst, data) {
  * @param {*} tbid
  * @param {*} betResult
  */
-var tbPayout = function(tbid, betResult) {
+var tbPayout = function (tbid, betResult) {
   return new Promise(async (resolve, reject) => {
     try {
       var _tbInfo = await dbTable.GET_TB_INFO(tbid)
@@ -138,7 +138,7 @@ var tbPayout = function(tbid, betResult) {
  * @param {*} id
  * @param {*} betResult
  */
-var peerPayout = function(id, betResult) {
+var peerPayout = function (id, betResult) {
   return new Promise(async (resolve, reject) => {
     try {
       // 取betinfo
@@ -172,7 +172,7 @@ var peerPayout = function(id, betResult) {
  * 沒有下注的人
  * @param {*} id
  */
-var emptyBetout = function(id) {
+var emptyBetout = function (id) {
   return new Promise(async (resolve, reject) => {
     await dbBet.INCREASE_USER_KICKCOUNT(id)
     resolve()
@@ -184,7 +184,7 @@ var emptyBetout = function(id) {
  * @param {*} id
  * @param {*} betResult
  */
-var payout = function(id, betResult) {
+var payout = function (id, betResult) {
   return new Promise(async (resolve, reject) => {
     try {
       var _userInfo = await dbUser.GET_USER_INFO(id)
@@ -216,7 +216,7 @@ var payout = function(id, betResult) {
  * 踢出玩家
  * @param {*} id
  */
-var kickout = function(tbid, id) {
+var kickout = function (tbid, id) {
   return new Promise(async (resolve, reject) => {
     try {
       var _userInfo = await dbUser.UPDATE_USER_INFO(id, { tbid: null })
@@ -234,7 +234,7 @@ var kickout = function(tbid, id) {
  * 踢出檢查
  * @param {*} id
  */
-var kickCheck = function(id) {
+var kickCheck = function (id) {
   return new Promise(async (resolve, reject) => {
     try {
       var _betInfo = await dbBet.GET_USER_BETINFO(id)
@@ -256,7 +256,7 @@ var kickCheck = function(id) {
  * @param {*} tbid
  */
 
-var ensureUserInTb = function(tbid) {
+var ensureUserInTb = function (tbid) {
   return new Promise(async (resolve, reject) => {
     try {
       var tbInfo = await dbTable.GET_TB_INFO(tbid)
@@ -277,7 +277,7 @@ var ensureUserInTb = function(tbid) {
  * @param {*} listener
  */
 
-var onUserJoin = function(tbid, listener) {
+var onUserJoin = function (tbid, listener) {
   if (!__userjoinCbs[tbid]) __userjoinCbs[tbid] = []
   __userjoinCbs[tbid].push(listener)
 }
@@ -287,7 +287,7 @@ var onUserJoin = function(tbid, listener) {
  * @param {*} tbid
  */
 
-var emitUserJoin = function(tbid) {
+var emitUserJoin = function (tbid) {
   var args = [].slice.call(arguments, 1)
   __userjoinCbs[tbid].map(cb => cb(...args))
 }

@@ -13,7 +13,7 @@ var { shallowObject } = require('../utils')
 // cst.TB_NTF_STR_QUIT = '7'
 // cst.TB_NTF_KICKOUT = '8'
 
-var Game = function(tbid) {
+var Game = function (tbid) {
   this.tbid = tbid
   this.pokerList = null
   this.timeClock = null
@@ -29,32 +29,32 @@ var Game = function(tbid) {
   var _completeCbs = []
   var _statusCbs = []
 
-  this.initPokerList = function(pokerList) {
+  this.initPokerList = function (pokerList) {
     this.pokerList = pokerList
   }
-  this.initgameTime = function(time) {
+  this.initgameTime = function (time) {
     this.gameTime = time
   }
-  this.initTimeClock = function(timeClock) {
+  this.initTimeClock = function (timeClock) {
     this.timeClock = timeClock()
   }
-  this.initNotify = function(notify) {
+  this.initNotify = function (notify) {
     this.notify = notify
   }
-  this.initPlayerSupplyRule = function(playerSupplyRule) {
+  this.initPlayerSupplyRule = function (playerSupplyRule) {
     this.playerSupplyRule = playerSupplyRule
   }
-  this.initBankererSupplyRule = function(bankererSupplyRule) {
+  this.initBankererSupplyRule = function (bankererSupplyRule) {
     this.bankererSupplyRule = bankererSupplyRule
   }
-  this.initFanPi = function(fanPi) {
+  this.initFanPi = function (fanPi) {
     this.fanPi = fanPi
   }
-  this.initOdds = function(odds) {
+  this.initOdds = function (odds) {
     this.odds = odds
   }
 
-  this.checkInit = function() {
+  this.checkInit = function () {
     if (!this.pokerList) throw new Error('pokerList is null')
     if (!this.timeClock) throw new Error('timeClock is null')
     if (!this.initTimeClock) throw new Error('initTimeClock is 0')
@@ -64,14 +64,14 @@ var Game = function(tbid) {
     if (!this.fanPi) throw new Error('fanPi is null')
     if (!this.odds) throw new Error('odds is null')
   }
-  this.onComplete = function(cb) {
+  this.onComplete = function (cb) {
     _completeCbs.push(cb)
   }
-  this.onStatus = function(cb) {
+  this.onStatus = function (cb) {
     _statusCbs.push(cb)
   }
 
-  var emitComplete = function() {
+  var emitComplete = function () {
     this.state = 0
     var fan = setTimeout(() => {
       this.fanPiProcess()
@@ -90,21 +90,21 @@ var Game = function(tbid) {
     }, 4000)
   }
 
-  var emitStatus = function(s, d) {
+  var emitStatus = function (s, d) {
     _statusCbs.map(e => e(s, d))
   }
 
-  this.startCountdown = function() {
+  this.startCountdown = function () {
     if (this.state) return
     this.state = 1
     this.timeClock.onComplete(() => emitComplete.bind(this)())
     this.timeClock.onChange(c => {
-      emitStatus('2', c / 1000)
+      emitStatus('2', { countdown: c / 1000 })
     })
     this.timeClock.start(this.gameTime)
   }
 
-  this.fanPiProcess = function() {
+  this.fanPiProcess = function () {
     // emitStatus('3', tbid)
     let res = this.fanPi(
       this.pokerList,
@@ -115,7 +115,7 @@ var Game = function(tbid) {
     this.data['poker_result'] = res
   }
 
-  this.calcResultProcess = function() {
+  this.calcResultProcess = function () {
     var player = this.data['poker_result'].player
     var banker = this.data['poker_result'].banker
     var playerpoint = this.data['poker_result'].playerPoint
@@ -128,8 +128,8 @@ var Game = function(tbid) {
       tie: playerpoint === bankerpoint ? 1 : 0,
       tiepair:
         playerpoint === bankerpoint &&
-        player[0].symbol === player[1].symbol &&
-        banker[0].symbol === banker[1].symbol
+          player[0].symbol === player[1].symbol &&
+          banker[0].symbol === banker[1].symbol
           ? 1
           : 0,
       bpair: banker[0].symbol === banker[1].symbol ? 1 : 0,
@@ -137,7 +137,7 @@ var Game = function(tbid) {
     }
   }
 
-  this.start = function() {
+  this.start = function () {
     this.checkInit()
     this.startCountdown()
   }
