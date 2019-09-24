@@ -98,7 +98,6 @@ var Game = function (tbid) {
   this.startCountdown = function () {
     if (this.state) return
     this.state = 1
-    emitStatus('0')
     this.timeClock.onComplete(() => emitComplete.bind(this)())
     this.timeClock.onChange(c => {
       emitStatus('2', { countdown: c / 1000 })
@@ -142,6 +141,7 @@ var Game = function (tbid) {
   this.start = function () {
     this.checkInit()
     this.startCountdown()
+    emitStatus('0')
   }
 }
 module.exports = Game

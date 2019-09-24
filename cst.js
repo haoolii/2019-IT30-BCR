@@ -23,6 +23,7 @@ cst.BT_NTF_PAYOUT_BALANCE = '4'
 /*=================================================
   USER CST
 =================================================*/
+cst.USER_NTF_INFO = '1'
 
 if (typeof module !== 'undefined') {
   module.exports = cst
