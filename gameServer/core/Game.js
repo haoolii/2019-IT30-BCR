@@ -73,6 +73,7 @@ var Game = function (tbid) {
 
   var emitComplete = function () {
     this.state = 0
+    emitStatus('1')
     var fan = setTimeout(() => {
       this.fanPiProcess()
     }, 1000)
@@ -97,6 +98,7 @@ var Game = function (tbid) {
   this.startCountdown = function () {
     if (this.state) return
     this.state = 1
+    emitStatus('0')
     this.timeClock.onComplete(() => emitComplete.bind(this)())
     this.timeClock.onChange(c => {
       emitStatus('2', { countdown: c / 1000 })

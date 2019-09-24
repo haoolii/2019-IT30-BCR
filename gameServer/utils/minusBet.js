@@ -20,7 +20,7 @@ var minusBet = function(a, b) {
   _bet['tie'] = a['tie'] - b['tie']
   _bet['tiepair'] = a['tiepair'] - b['tiepair']
   _bet['bpair'] = a['bpair'] - b['bpair']
-  _bet['ppair'] = a['ppair'] * b['ppair']
+  _bet['ppair'] = a['ppair'] - b['ppair']
   return _bet
 }
 

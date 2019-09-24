@@ -4,14 +4,14 @@
     "total": 0,
     "status": 1,
     "pool": {
-      "banker": 0,
-      "player": 0,
-      "bankerking": 0,
-      "playerking": 0,
-      "tie": 0,
-      "tiepair": 0,
-      "bpair": 0,
-      "ppair": 0
+      "banker": -69525000,
+      "player": 5710000,
+      "bankerking": 34023000,
+      "playerking": 15030000,
+      "tie": 48463000,
+      "tiepair": 6134000,
+      "bpair": 16040000,
+      "ppair": 11224000
     },
     "info": {
       "userCount": 0

@@ -145,7 +145,7 @@ var peerPayout = function (id, betResult) {
       var _betInfo = await dbBet.GET_USER_BETINFO(id)
 
       // 通知牌局結果
-      $N.notifyPeer(id, cmd.MSG_TB_NTF, cst.TB_NTF_FANPI, betResult)
+      $N.notifyPeer(id, cmd.MSG_TB_NTF, cst.TB_NTF_PI_RESULT, betResult)
 
       // 檢查是否要踢掉
       if (!(await kickCheck(id))) return
@@ -199,7 +199,8 @@ var payout = function (id, betResult) {
       await minusTbPool(_userInfo.tbid, _payout_bet)
 
       _payout_total = calcBetTotal(_payout_bet)
-      $N.notifyPeer(id, cmd.MSG_BT_NTF, cst.BT_NTF_PAYOUT, _payout_bet)
+      console.log('cst.BT_NTF_PAYOUT', cst.BT_NTF_PAYOUT)
+      $N.notifyPeer(id, cmd.MSG_BT_NTF, cst.BT_NTF_PAYOUT, {bet: _payout_bet})
       _payout_userInfo = await dbUser.UPDATE_USER_INFO(id, {
         balance: _userInfo.balance + _payout_total
       })
