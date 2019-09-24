@@ -104,6 +104,7 @@ function ADD_USER(email) {
         _CREATE({
           email: email,
           online: false,
+          tbid: null,
           password: _generatePassword(),
           balance: 0
         }),
