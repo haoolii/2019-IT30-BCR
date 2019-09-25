@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3087
 
 const webServer = require('./webServer/server')
 const gameServer = require('./gameServer/server')
