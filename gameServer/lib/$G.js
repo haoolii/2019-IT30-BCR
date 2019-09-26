@@ -11,6 +11,7 @@ const config = require('../config')
 const cmd = require('../../cmd')
 const cst = require('../../cst')
 const $N = require('./$N')
+const { delay } = require('../utils')
 
 const __userjoinCbs = {}
 
@@ -156,6 +157,7 @@ var peerPayout = function (id, betResult) {
         await emptyBetout(id)
       } else {
         // 派彩囉
+        await delay(15000)
         await payout(id, betResult)
       }
 

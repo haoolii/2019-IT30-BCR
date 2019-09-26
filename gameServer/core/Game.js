@@ -106,7 +106,6 @@ var Game = function (tbid) {
   }
 
   this.fanPiProcess = function () {
-    // emitStatus('3', tbid)
     let res = this.fanPi(
       this.pokerList,
       this.playerSupplyRule,
