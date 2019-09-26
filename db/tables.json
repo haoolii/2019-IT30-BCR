@@ -2,13 +2,13 @@
   "1": {
     "tbid": "1",
     "total": 0,
-    "status": 1,
+    "status": 0,
     "pool": {
-      "banker": -170106000,
+      "banker": -170150000,
       "player": -54038000,
-      "bankerking": -21009000,
+      "bankerking": -21015000,
       "playerking": -3015000,
-      "tie": -270000,
+      "tie": -45270000,
       "tiepair": 0,
       "bpair": -12120000,
       "ppair": -24000
@@ -17,6 +17,8 @@
       "userCount": 0
     },
     "history": [],
-    "users": []
+    "users": [
+      "1"
+    ]
   }
 }

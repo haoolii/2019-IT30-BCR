@@ -10,9 +10,10 @@ var MainController = function () {
   this.pokerList = []
   this.games = {}
   this.ws = null
-
+  this.gamestatus = 0 // 0 等待中 1 開始中
   this.initGames = async function (__tbid) {
     try {
+      if (this.gamestatus) return
       if (this.games[__tbid]) return
       var anyUserInTb = await $G.ensureUserInTb(__tbid)
       if (anyUserInTb) {
@@ -26,6 +27,7 @@ var MainController = function () {
             await $G.calcTbPool(__tbid)
             await $G.tbPayout(__tbid, r)
             this.games[__tbid] = null
+            this.gamestatus = 0
             setTimeout(() => this.initGames(__tbid), 20000)
           } catch (err) {
             console.log('error initGames')
@@ -33,6 +35,7 @@ var MainController = function () {
           }
         })
         GameController.gameStart(__tbid)
+        this.gamestatus = 1
         delete this.games.__tbid
       }
     } catch (err) {
