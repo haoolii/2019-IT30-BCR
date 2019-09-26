@@ -31,9 +31,14 @@ var WsController = function () {
       console.log(`id :${id} notifyPeer  NOT CONNECTED`)
     }
   }
+
+  // setInterval(() => {
+  //   console.log(Object.keys(usersSocket))
+  // }, 1000);
   var ___socket = function (_io) {
     _io.on('connection', function (socket) {
       socket.emit('connect')
+      console.log('socketid', socket._id)
 
       const __rqs = (reqkey, reskey, id, data) => {
         MainController.onWs(reqkey, id, data)
@@ -41,6 +46,7 @@ var WsController = function () {
           .catch(err => socket.emit(reskey, { error: err }))
       }
       usersSocket[socket._id] = socket
+
 
       socket.on(cmd.REQ_USER_TB_SITDOWN, data => {
         __rqs(
