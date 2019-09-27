@@ -35,11 +35,12 @@ var calcTbPool = function (tbid) {
         bpair: 0,
         ppair: 0
       }
-      await _tbInfo.users.map(async id => {
+      var _pool_bet = {}
+      _tbInfo.users.map(async (id) => {
         var _userBetinfo = await dbBet.GET_USER_BETINFO(id)
-        _bet = combineBet(_bet, _userBetinfo.bet)
+        _pool_bet = combineBet(_bet, _userBetinfo.bet)
+        await plusTbPool(tbid, _pool_bet)
       })
-      await plusTbPool(tbid, _bet)
       resolve()
     } catch (err) {
       reject(err)

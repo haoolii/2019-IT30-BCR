@@ -72,23 +72,24 @@ var Game = function (tbid) {
   }
 
   var emitComplete = function () {
+    console.log('emitComplete')
     this.state = 0
     emitStatus('1')
     var fan = setTimeout(() => {
       this.fanPiProcess()
-    }, 1000)
+    }, 500)
     var calc = setTimeout(() => {
       this.calcResultProcess()
-    }, 1300)
+    }, 1000)
     var ntf = setTimeout(() => {
       _completeCbs.map(e => e(this.data))
-    }, 1600)
+    }, 2000)
     var last = setTimeout(() => {
       clearTimeout(fan)
       clearTimeout(calc)
       clearTimeout(ntf)
       clearTimeout(last)
-    }, 4000)
+    }, 2500)
   }
 
   var emitStatus = function (s, d) {

@@ -4,14 +4,14 @@
     "status": 1,
     "kickcount": 0,
     "bet": {
-      "banker": 5000,
-      "player": 4000,
-      "bankerking": 2000,
-      "playerking": 3000,
-      "tie": 6000,
-      "tiepair": 3000,
-      "bpair": 2000,
-      "ppair": 2000
+      "banker": 0,
+      "player": 0,
+      "bankerking": 0,
+      "playerking": 0,
+      "tie": 0,
+      "tiepair": 0,
+      "bpair": 0,
+      "ppair": 0
     }
   },
   "2": {
