@@ -5,9 +5,6 @@ const dbUser = require('../lib/dbUser')
 const dbTable = require('../lib/dbTable')
 
 var auth = function (socket, next) {
-  console.log('=================================')
-  console.log(socket.handshake.query.token)
-  console.log('=================================')
   jwt.verify(socket.handshake.query.token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       console.log(err)
