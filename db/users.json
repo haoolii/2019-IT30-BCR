@@ -10,10 +10,10 @@
     },
     {
       "id": 2,
-      "email": "ggg@gmail.com",
+      "email": "test@gmail.com",
       "online": false,
-      "password": "1235",
-      "balance": 979547555,
+      "password": "test",
+      "balance": 9988776655,
       "tbid": null
     },
     {
