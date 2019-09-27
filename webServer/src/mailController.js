@@ -30,6 +30,13 @@ function _SEND_EMAIL(_opt) {
 }
 
 function SEND_USER_PASSWORD(mail, password) {
+  console.log('====================')
+  console.log({
+    from: process.env.EMAIL_USER,
+    to: mail,
+    subject: '三十天路邊賭場上線了!!',
+    text: `Your Password: ${password}`
+  })
   return _SEND_EMAIL({
     from: process.env.EMAIL_USER,
     to: mail,
