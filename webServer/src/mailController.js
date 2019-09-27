@@ -11,6 +11,12 @@ var transporter = nodemailer.createTransport({
 })
 
 function _SEND_EMAIL(_opt) {
+  console.log('============================Send')
+  console.log(process.env.EMAIL_USER)
+  console.log(process.env.EMAIL_PASS)
+  console.log('============================Send data')
+  console.log(opt)
+  console.log('============================Send data')
   return new Promise((resolve, reject) => {
     transporter.sendMail(_opt, function(error, info) {
       if (error) {
