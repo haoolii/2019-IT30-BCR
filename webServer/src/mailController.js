@@ -20,6 +20,7 @@ function _SEND_EMAIL(_opt) {
   return new Promise((resolve, reject) => {
     transporter.sendMail(_opt, function(error, info) {
       if (error) {
+        console.log(error)
         errorController.ERROR(error)
         reject(error)
       } else {
