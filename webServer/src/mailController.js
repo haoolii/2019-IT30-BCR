@@ -15,7 +15,7 @@ function _SEND_EMAIL(_opt) {
   console.log(process.env.EMAIL_USER)
   console.log(process.env.EMAIL_PASS)
   console.log('============================Send data')
-  console.log(opt)
+  console.log(_opt)
   console.log('============================Send data')
   return new Promise((resolve, reject) => {
     transporter.sendMail(_opt, function(error, info) {
