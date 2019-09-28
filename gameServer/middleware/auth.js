@@ -10,7 +10,7 @@ var auth = function (socket, next) {
       console.log(err)
       socket.disconnect()
     } else {
-      socket._id = decoded.userInfo.id
+      socket._id = decoded.userInfo.id + ''
       next()
     }
   })

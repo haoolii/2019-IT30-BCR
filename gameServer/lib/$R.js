@@ -67,7 +67,6 @@ var betInfo = function (id) {
  * @param {*} id
  */
 var userInfo = function (id) {
-  console.log('$R userInfo' + id)
   return new Promise((resolve, reject) => {
     dbUser
       .GET_USER_INFO(id)
@@ -85,7 +84,6 @@ var userInfo = function (id) {
  * @param {*} id
  */
 var tbInfo = function (id) {
-  console.log('$R tbInfo' + id)
   return new Promise((resolve, reject) => {
     dbUser.GET_USER_INFO(id).then(userInfo => {
       dbTable
