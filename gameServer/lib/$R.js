@@ -4,7 +4,7 @@ const dbTable = require('./dbTable')
 const { calcBetTotal, ensureNumber } = require('../utils')
 const $G = require('./$G')
 const $N = require('./$N')
-const $N = require('./$N')
+
 /**
  * 檢查是否可以下注
  * @param {*} id
