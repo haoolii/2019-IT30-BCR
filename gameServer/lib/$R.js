@@ -75,7 +75,9 @@ var userInfo = function (id) {
         delete _uinfo.password
         resolve(_uinfo)
       })
-      .catch(reject)
+      .catch(err => {
+        reject(err)
+      })
   })
 }
 

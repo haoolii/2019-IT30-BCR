@@ -2,7 +2,7 @@
   "1": {
     "tbid": "1",
     "total": 0,
-    "status": 1,
+    "status": 0,
     "pool": {
       "banker": 24006000,
       "player": -138516000,
@@ -17,6 +17,9 @@
       "userCount": 0
     },
     "history": [],
-    "users": []
+    "users": [
+      "1",
+      "2"
+    ]
   }
 }
