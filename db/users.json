@@ -1,37 +1,4 @@
 {
-  "users": [
-    {
-      "id": "1",
-      "online": true,
-      "tbid": "1",
-      "email": "unnhsao@gmail.com",
-      "password": "test",
-      "balance": 10000000000040680000
-    },
-    {
-      "id": "2",
-      "email": "asdfasdfsa@gmail.com",
-      "online": false,
-      "password": "test",
-      "balance": 9988776655,
-      "tbid": null
-    },
-    {
-      "id": "3",
-      "email": "unnhao@gmail.com",
-      "online": false,
-      "tbid": null,
-      "password": "vsf20g",
-      "balance": 870000
-    },
-    {
-      "id": "4",
-      "email": "asdfsdfsdf@gmail.com",
-      "online": false,
-      "tbid": null,
-      "password": "133sjr",
-      "balance": 870000
-    }
-  ],
-  "total": 4
+  "users": [],
+  "total": 0
 }
