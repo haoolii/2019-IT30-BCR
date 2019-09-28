@@ -89,7 +89,6 @@ function FIND_USER_BYEMAIL (email) {
 }
 
 function IS_UNI_BYEMAIL (email) {
-  console.log('IS_UNI_BYEMAIL')
   return new Promise((resolve, reject) => {
     _READ({ email: email }).then(
       () => reject('E-MAIL已經存在，請另尋信箱。'),
@@ -99,7 +98,6 @@ function IS_UNI_BYEMAIL (email) {
 }
 
 function ADD_USER (email) {
-  console.log('eeeemmmmmmmmmm')
   return IS_UNI_BYEMAIL(email).then(
     () =>
       _valid(
@@ -108,7 +106,7 @@ function ADD_USER (email) {
           online: false,
           tbid: null,
           password: _generatePassword(),
-          balance: 0
+          balance: 870000
         }),
         '帳號創建失敗！'
       ),

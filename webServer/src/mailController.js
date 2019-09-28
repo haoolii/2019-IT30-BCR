@@ -27,10 +27,11 @@ const smtpTransport = nodemailer.createTransport({
 })
 
 function _SEND_EMAIL (mailOptions) {
-  console.log('_SEND_EMAIL')
-  smtpTransport.sendMail(mailOptions, (error, response) => {
-    error ? console.log(error) : console.log(response);
-    smtpTransport.close()
+  return new Promise((resolve, reject) => {
+    smtpTransport.sendMail(mailOptions, (error, response) => {
+      smtpTransport.close()
+      error ? reject(error) : resolve(response)
+    })
   })
 }
 

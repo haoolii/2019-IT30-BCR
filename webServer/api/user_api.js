@@ -65,7 +65,6 @@ router.get('/userInfo', verifyToken, (req, res) => {
   userController
     .FIND_USER_BYEMAIL(req.decoded.userInfo.email)
     .then(r => {
-      console.log(r)
       res.json({
         token: req.token,
         email: r.email,
