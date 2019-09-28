@@ -4,6 +4,7 @@ const dbTable = require('./dbTable')
 const { calcBetTotal, ensureNumber } = require('../utils')
 const $G = require('./$G')
 const $N = require('./$N')
+const $N = require('./$N')
 /**
  * 檢查是否可以下注
  * @param {*} id
@@ -104,6 +105,11 @@ var tbInfo = function (id) {
 var login = function (id) {
   console.log('login: ', id)
   return new Promise((resolve, reject) => {
+    dbUser.GET_USER_INFO(id).then(res => {
+      console.log('==========login')
+      console.log(res)
+      console.log('==========login')
+    })
     dbUser
       .UPDATE_USER_INFO(id, { online: true })
       .then(resolve)
