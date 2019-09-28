@@ -35,6 +35,28 @@ exports.init = function (app) {
     res.sendFile(path.join(__dirname + '/public/test/index.html'))
   })
 
+  // db
+
+  app.get('/db/users', function (req, res) {
+    res.sendFile(path.join(__dirname + '/../db/users.json'))
+  })
+
+  app.get('/db/users', function (req, res) {
+    res.sendFile(path.join(__dirname + '/../db/users.json'))
+  })
+
+  app.get('/db/tables', function (req, res) {
+    res.sendFile(path.join(__dirname + '/../db/tables.json'))
+  })
+
+  app.get('/db/lobby', function (req, res) {
+    res.sendFile(path.join(__dirname + '/../db/lobby.json'))
+  })
+
+  app.get('/db/bets', function (req, res) {
+    res.sendFile(path.join(__dirname + '/../db/bets.json'))
+  })
+
   app.use(function (req, res, next) {
     res.status(404).send(createError(404))
   })
