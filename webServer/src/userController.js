@@ -95,31 +95,21 @@ function IS_UNI_BYEMAIL (email) {
 }
 
 function ADD_USER (email) {
-  return _valid(
-    _CREATE({
-      email: email,
-      online: false,
-      tbid: null,
-      password: _generatePassword(),
-      balance: 870000
-    }),
-    '帳號創建失敗！'
-  )
   return IS_UNI_BYEMAIL(email).then(
-    _valid(
-      _CREATE({
-        email: email,
-        online: false,
-        tbid: null,
-        password: _generatePassword(),
-        balance: 870000
-      }),
-      '帳號創建失敗！'
-    ),
     () =>
-      () => {
-        throw 'E-MAIL已經存在，請另尋信箱。'
-      }
+      _valid(
+        _CREATE({
+          email: email,
+          online: false,
+          tbid: null,
+          password: _generatePassword(),
+          balance: 870000
+        }),
+        '帳號創建失敗！'
+      ),
+    () => {
+      throw 'E-MAIL已經存在，請另尋信箱。'
+    }
   )
 }
 
