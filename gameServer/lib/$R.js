@@ -58,7 +58,7 @@ var betInfo = function (id) {
     dbBet
       .GET_USER_BETINFO(id)
       .then(resolve)
-      .catch(reject)
+      .catch(err => { reject(err) })
   })
 }
 

@@ -56,7 +56,7 @@ var MainController = function () {
 
   this.onWs = function (reqkey, id, data) {
     return new Promise((resolve, reject) => {
-      const _R = p => p.then(resolve).catch(reject)
+      const _R = p => p.then(res => resolve(res)).catch(err => reject(err))
       switch (reqkey) {
         case cmd.REQ_USER_TB_SITDOWN:
           _R($R.sitDown(data.tbid, id))
