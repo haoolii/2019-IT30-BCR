@@ -36,7 +36,7 @@ function _CREATE (data) {
   return _valid(
     db
       .get('users')
-      .push({ id: _getUserTotal() + 1, ...data })
+      .push({ id: _getUserTotal() + 1 + '', ...data })
       .write()
   ).then(() => {
     _total_plus()
