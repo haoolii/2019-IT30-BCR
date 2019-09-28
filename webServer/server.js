@@ -26,7 +26,7 @@ exports.init = function (app) {
   app.get('/game', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/game/index.html'))
   })
-  
+
   app.get('/admin', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/admin/index.html'))
   })

@@ -1,50 +1,46 @@
-var nodemailer = require('nodemailer')
-var errorController = require('./errorController')
+const nodemailer = require("nodemailer")
+const { google } = require("googleapis")
+const OAuth2 = google.auth.OAuth2;
 require('dotenv').config()
 
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
+const oauth2Client = new OAuth2(
+  process.env.EMAIL_clientId,
+  process.env.EMAIL_clientSecret,
+  process.env.EMAIL_redirect_url
+)
+
+oauth2Client.setCredentials({
+  refresh_token: process.env.EMAIL_refreshToken
+});
+const accessToken = oauth2Client.getAccessToken()
+
+const smtpTransport = nodemailer.createTransport({
+  service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    type: "OAuth2",
+    user: process.env.EMAIL_user,
+    clientId: process.env.EMAIL_clientId,
+    clientSecret: process.env.EMAIL_clientSecret,
+    refreshToken: process.env.EMAIL_refreshToken,
+    accessToken: accessToken
   }
 })
 
-function _SEND_EMAIL(_opt) {
-  console.log('============================Send')
-  console.log(process.env.EMAIL_USER)
-  console.log(process.env.EMAIL_PASS)
-  console.log('============================Send data')
-  console.log(_opt)
-  console.log('============================Send data')
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(_opt, function(error, info) {
-      if (error) {
-        console.log(error)
-        reject(error)
-      } else {
-        resolve(info.response)
-      }
-    })
+function _SEND_EMAIL (mailOptions) {
+  console.log('_SEND_EMAIL')
+  smtpTransport.sendMail(mailOptions, (error, response) => {
+    error ? console.log(error) : console.log(response);
+    smtpTransport.close()
   })
 }
 
-function SEND_USER_PASSWORD(mail, password) {
-  console.log('====================')
-  console.log({
-    from: process.env.EMAIL_USER,
-    to: mail,
-    subject: '三十天路邊賭場上線了!!',
-    text: `Your Password: ${password}`
-  })
+function SEND_USER_PASSWORD (mail, password) {
   return _SEND_EMAIL({
-    from: process.env.EMAIL_USER,
+    from: process.env.EMAIL_user,
     to: mail,
     subject: '三十天路邊賭場上線了!!',
     text: `Your Password: ${password}`
   })
 }
 
-module.exports = {
-  SEND_USER_PASSWORD: SEND_USER_PASSWORD
-}
+module.exports = { SEND_USER_PASSWORD: SEND_USER_PASSWORD }
