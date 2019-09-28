@@ -103,24 +103,12 @@ var tbInfo = function (id) {
  * @param {*} id
  */
 var login = function (id) {
-  console.log('login: ', id)
+  console.log(id)
   return new Promise((resolve, reject) => {
-    dbUser.GET_USER_INFO(id)
-      .then(res => {
-        dbUser.LIST_USERS_INFO().then(res => {
-          console.log('==========LIST_USERS_INFO')
-          console.log(res)
-          console.log('==========LIST_USERS_INFO')
-          dbUser
-            .UPDATE_USER_INFO(id, { online: true })
-            .then(res => {
-              resolve(res)
-            })
-            .catch(err => {
-              reject(err)
-            })
-        })
-      })
+    dbUser
+      .UPDATE_USER_INFO(id + '', { online: true })
+      .then(resolve)
+      .catch(reject)
   })
 }
 

@@ -1,7 +1,4 @@
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('./db/users.json')
-const db = low(adapter)
+const db = require('../../db/db').userdb
 db.defaults({ users: [], total: 0 }).write()
 var dbUser = function () {
   function _valid (res, err = 'USERINFO ERROR') {
@@ -64,17 +61,6 @@ var dbUser = function () {
 
   this.GET_USER_INFO = function (id) {
     return _READ({ id: id })
-  }
-
-  this.LIST_USERS_INFO = function () {
-    let data = db
-      .get('users')
-      .value()
-    if (data) {
-      return { users: data }
-    } else {
-      return { users: 'fail' }
-    }
   }
 
   this.UPDATE_USER_BALANCE = function (id, balance) {

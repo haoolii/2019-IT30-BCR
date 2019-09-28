@@ -1,16 +1,13 @@
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('./db/tables.json')
-const db = low(adapter)
+const db = require('../../db/db').tablesdb
 
-var dbTable = function() {
-  function _valid(res, err = 'TBINFO ERROR') {
+var dbTable = function () {
+  function _valid (res, err = 'TBINFO ERROR') {
     return new Promise((resolve, reject) => {
       res ? resolve(res) : reject(err)
     })
   }
 
-  function _CREATE(data) {
+  function _CREATE (data) {
     return _valid(
       db
         .get('tables')
@@ -27,11 +24,11 @@ var dbTable = function() {
     })
   }
 
-  function _READ({ tbid }) {
+  function _READ ({ tbid }) {
     return _valid(db.get(tbid).value())
   }
 
-  function _UPDATE({ tbid, data }) {
+  function _UPDATE ({ tbid, data }) {
     return _valid(
       db
         .get(tbid)
@@ -40,7 +37,7 @@ var dbTable = function() {
     )
   }
 
-  function _DELETE({ tbid }) {
+  function _DELETE ({ tbid }) {
     return _valid(
       db
         .get('tables')
@@ -49,11 +46,11 @@ var dbTable = function() {
     )
   }
 
-  this.GET_TB_INFO = function(tbid) {
+  this.GET_TB_INFO = function (tbid) {
     return _READ({ tbid: tbid })
   }
 
-  this.ADD_TB_HISTORY = function(tbid, history) {
+  this.ADD_TB_HISTORY = function (tbid, history) {
     return _READ({ tbid: tbid })
       .then(tb => {
         var len = tb.history.length
@@ -65,7 +62,7 @@ var dbTable = function() {
       })
   }
 
-  this.KICK_OUT_USER = function(tbid, uid) {
+  this.KICK_OUT_USER = function (tbid, uid) {
     return _READ({ tbid: tbid })
       .then(tb => {
         tb.users.splice(tb.users.indexOf(uid), 1)
@@ -76,15 +73,15 @@ var dbTable = function() {
       })
   }
 
-  this.UPDATE_TB_STATUS = function(tbid, status) {
+  this.UPDATE_TB_STATUS = function (tbid, status) {
     return _UPDATE({ tbid: tbid, data: { status: status } })
   }
 
-  this.UPDATE_TB_INFO = function(tbid, data) {
+  this.UPDATE_TB_INFO = function (tbid, data) {
     return _UPDATE({ tbid: tbid, data: data })
   }
 
-  this.USER_SITDOWN = function(tbid, id) {
+  this.USER_SITDOWN = function (tbid, id) {
     return _READ({ tbid: tbid })
       .then(tb => {
         if (tb.users.indexOf(id) === -1) tb.users.push(id)

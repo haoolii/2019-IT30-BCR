@@ -1,8 +1,5 @@
-const low = require('lowdb')
 const generator = require('generate-password')
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('./db/users.json')
-const db = low(adapter)
+const db = require('../../db/db').userdb
 
 db.defaults({ users: [], total: 0 }).write()
 
@@ -98,21 +95,31 @@ function IS_UNI_BYEMAIL (email) {
 }
 
 function ADD_USER (email) {
+  return _valid(
+    _CREATE({
+      email: email,
+      online: false,
+      tbid: null,
+      password: _generatePassword(),
+      balance: 870000
+    }),
+    '帳號創建失敗！'
+  )
   return IS_UNI_BYEMAIL(email).then(
+    _valid(
+      _CREATE({
+        email: email,
+        online: false,
+        tbid: null,
+        password: _generatePassword(),
+        balance: 870000
+      }),
+      '帳號創建失敗！'
+    ),
     () =>
-      _valid(
-        _CREATE({
-          email: email,
-          online: false,
-          tbid: null,
-          password: _generatePassword(),
-          balance: 870000
-        }),
-        '帳號創建失敗！'
-      ),
-    () => {
-      throw 'E-MAIL已經存在，請另尋信箱。'
-    }
+      () => {
+        throw 'E-MAIL已經存在，請另尋信箱。'
+      }
   )
 }
 

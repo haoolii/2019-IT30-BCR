@@ -1,25 +1,22 @@
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('./db/bets.json')
-const db = low(adapter)
+const db = require('../../db/db').betsdb
 
-function _valid(res, err = 'BETINFO ERROR') {
+function _valid (res, err = 'BETINFO ERROR') {
   return new Promise((resolve, reject) => {
-    res ? resolve(res) : reject(err)
+    res ? resolve(Object.assign({}, res)) : reject(err)
   })
 }
 
-function _CREATE(id, data) {
+function _CREATE (id, data) {
   return _valid(db.set(id, data).write()).then(() => {
     return _valid(db.get(id).value())
   })
 }
 
-function _READ(id) {
+function _READ (id) {
   return _valid(db.get(id).value())
 }
 
-function _UPDATE(id, data) {
+function _UPDATE (id, data) {
   return _valid(db.get(id).value()).then(r => {
     return _valid(
       db
@@ -30,7 +27,7 @@ function _UPDATE(id, data) {
   })
 }
 
-function _UPDATE_BETINFO(id, data) {
+function _UPDATE_BETINFO (id, data) {
   return _valid(db.get(id).value()).then(r => {
     return _valid(
       db
@@ -42,23 +39,23 @@ function _UPDATE_BETINFO(id, data) {
   })
 }
 
-function _DELETE(id) {
+function _DELETE (id) {
   return _valid(db.unset(id).write())
 }
 
-function REMOVE_USER_BETINFO(id) {
+function REMOVE_USER_BETINFO (id) {
   return _DELETE(id)
 }
 
-function UPDATE_USER_BETINFO(id, betinfo) {
+function UPDATE_USER_BETINFO (id, betinfo) {
   return _UPDATE_BETINFO(id, betinfo)
 }
 
-function GET_USER_BETINFO(id) {
+function GET_USER_BETINFO (id) {
   return _READ(id)
 }
 
-function RESET_USER_BETOUT(id) {
+function RESET_USER_BETOUT (id) {
   return _READ(id).then(data => {
     data.bet['banker'] = 0
     data.bet['player'] = 0
@@ -72,7 +69,7 @@ function RESET_USER_BETOUT(id) {
   })
 }
 
-function UPDATE_USER_BETOUT(id, betinfo) {
+function UPDATE_USER_BETOUT (id, betinfo) {
   return _READ(id).then(data => {
     data.bet['banker'] += betinfo['banker']
     data.bet['player'] += betinfo['player']
@@ -86,7 +83,7 @@ function UPDATE_USER_BETOUT(id, betinfo) {
   })
 }
 
-function CREATE_USER_BETINFO(id) {
+function CREATE_USER_BETINFO (id) {
   return _CREATE(id, {
     id: id,
     status: 0,
