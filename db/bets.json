@@ -2,7 +2,7 @@
   "1": {
     "id": 1,
     "status": 1,
-    "kickcount": 1,
+    "kickcount": 0,
     "bet": {
       "banker": 0,
       "player": 0,

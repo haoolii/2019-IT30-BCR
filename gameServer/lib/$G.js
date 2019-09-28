@@ -202,7 +202,6 @@ var payout = function (id, betResult) {
       await minusTbPool(_userInfo.tbid, _payout_bet)
 
       _payout_total = calcBetTotal(_payout_bet)
-      console.log('cst.BT_NTF_PAYOUT', cst.BT_NTF_PAYOUT)
       $N.notifyPeer(id, cmd.MSG_BT_NTF, cst.BT_NTF_PAYOUT, { bet: _payout_bet })
       _payout_userInfo = await dbUser.UPDATE_USER_INFO(id, {
         balance: _userInfo.balance + _payout_total

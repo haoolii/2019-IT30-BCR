@@ -32,13 +32,9 @@ var WsController = function () {
     }
   }
 
-  // setInterval(() => {
-  //   console.log(Object.keys(usersSocket))
-  // }, 1000);
   var ___socket = function (_io) {
     _io.on('connection', function (socket) {
       socket.emit('connect')
-      console.log('socketid', socket._id)
 
       const __rqs = (reqkey, reskey, id, data) => {
         MainController.onWs(reqkey, id, data)

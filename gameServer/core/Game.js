@@ -72,7 +72,6 @@ var Game = function (tbid) {
   }
 
   var emitComplete = function () {
-    console.log('emitComplete')
     this.state = 0
     emitStatus('1')
     var fan = setTimeout(() => {
