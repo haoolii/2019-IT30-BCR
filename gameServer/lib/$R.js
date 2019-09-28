@@ -105,15 +105,20 @@ var tbInfo = function (id) {
 var login = function (id) {
   console.log('login: ', id)
   return new Promise((resolve, reject) => {
-    dbUser.GET_USER_INFO(id).then(res => {
-      console.log('==========login')
-      console.log(res)
-      console.log('==========login')
-    })
-    dbUser
-      .UPDATE_USER_INFO(id, { online: true })
-      .then(resolve)
-      .catch(reject)
+    dbUser.GET_USER_INFO(id)
+      .then(res => {
+        console.log('==========login')
+        console.log(res)
+        console.log('==========login')
+        dbUser
+          .UPDATE_USER_INFO(id, { online: true })
+          .then(res => {
+            resolve(res)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
   })
 }
 
