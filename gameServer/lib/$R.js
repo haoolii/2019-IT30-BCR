@@ -37,6 +37,7 @@ var betOut = function (id, bet) {
  * @param {*} id
  */
 var sitDown = function (tbid, id) {
+  console.log(`sitDown: tbid ${tbid} id ${id}`)
   return new Promise(async (resolve, reject) => {
     try {
       await dbTable.USER_SITDOWN(tbid, id)
@@ -67,6 +68,7 @@ var betInfo = function (id) {
  * @param {*} id
  */
 var userInfo = function (id) {
+  console.log(`userInfo ${id}`)
   return new Promise((resolve, reject) => {
     dbUser
       .GET_USER_INFO(id)
@@ -100,6 +102,7 @@ var tbInfo = function (id) {
  * @param {*} id
  */
 var login = function (id) {
+  console.log('login: ', id)
   return new Promise((resolve, reject) => {
     dbUser
       .UPDATE_USER_INFO(id, { online: true })
