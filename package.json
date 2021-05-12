@@ -28,7 +28,7 @@
     "googleapis": "^43.0.0",
     "jsonwebtoken": "^8.5.1",
     "lowdb": "^1.0.0",
-    "nodemailer": "^6.3.0",
+    "nodemailer": "^6.4.16",
     "nodemon": "^1.19.2",
     "socket.io": "^2.2.0",
     "sqlite3": "^4.1.0"
